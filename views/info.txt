@@ -1,0 +1,1 @@
+Esta pasta deve conter todas as páginas(Views) que utilizaremos no app 4Health.

@@ -1,0 +1,1 @@
+Esta pasta deve conter constantes e outros arquivos que serão reutilizados durante o projeto.

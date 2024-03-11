@@ -1,0 +1,1 @@
+Esta pasta deve conter funcionalidades, por exemplo o arquivo que tem os métodos do banco.
