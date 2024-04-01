@@ -96,7 +96,7 @@ class DataMethods():
 
     #Metodos para adicionar/remover/editar usuarios(table)
     @classmethod
-    def add_users(cls, nome, email, senha, data_nascimento, sexo, telefone , tipo_sanguineo, altura, peso):
+    def add_users(cls, nome, email, senha, data_nascimento, sexo, telefone, tipo_sanguineo, altura, peso):
         connection = cls.create_connection()
         cursor = connection.cursor()
         cursor.execute(f"INSERT INTO usuarios(nome, email, senha, data_nascimento, sexo, telefone , tipo_sanguineo, altura, peso) VALUES"
@@ -114,15 +114,11 @@ class DataMethods():
         connection.close()
     @classmethod
     def remove_users(cls, id_usuario):
-        cls.execute_query(f"DELETE FROM usuarios WHERE id = {id_usuario}")
+        cls.execute_query(f"DELETE FROM usuarios WHERE id_usuario = {id_usuario}")
     @classmethod
     def edit_users(cls, id_usuario, senha, telefone, altura, peso):
-        cls.execute_query(f"UPDATE usuarios SET"
-                       f"senha = '{senha}',"
-                       f"telefone = {telefone},"
-                       f"altura = {altura},"
-                       f"peso = {peso}"
-                       f"WHERE id_usuario = {id_usuario}")
+        cls.execute_query(f"UPDATE usuarios SET senha = '{senha}',telefone = {telefone}, altura = {altura}, peso = {peso} WHERE id_usuario = {id_usuario}")
+
     #Metodos para adicionar/remover/editar calendario
     @classmethod
     def add_agenda(cls,id_usuario, titulo_evento, desc_evento, data_evento, hora_evento):
@@ -139,7 +135,7 @@ class DataMethods():
         connection.close()
     @classmethod
     def remove_agenda(cls, id_agendamento):
-        cls.execute_query(f"DELETE FROM agenda WHERE id = {id_agendamento}")
+        cls.execute_query(f"DELETE FROM agenda WHERE id_agendamento = {id_agendamento}")
     @classmethod
     def edit_agenda(cls, id_agendamento, titulo_evento, desc_evento, data_evento, hora_evento):
         cls.execute_query(f"UPDATE agenda SET"
@@ -164,7 +160,7 @@ class DataMethods():
         connection.close()
     @classmethod
     def remove_remedio(cls, id_remedio):
-        cls.execute_query(f"DELETE FROM remedio WHERE id = {id_remedio}")
+        cls.execute_query(f"DELETE FROM remedio WHERE id_remedio = {id_remedio}")
     @classmethod
     def edit_remedio(cls, nome_remedio, desc_remedio, intervalo_uso, primeiro_uso):
         cls.execute_query(f"UPDATE remedio SET"
@@ -185,7 +181,7 @@ class DataMethods():
                        f")")
     @classmethod
     def remove_consulta(cls, id_consulta):
-        cls.execute_query(f"DELETE FROM consulta WHERE id = {id_consulta}")
+        cls.execute_query(f"DELETE FROM consulta WHERE id_consulta = {id_consulta}")
 
     @classmethod
     def edit_consulta(cls, nome_consulta, desc_consulta, data_consulta):
@@ -207,7 +203,7 @@ class DataMethods():
 
     @classmethod
     def remove_exame(cls, id_exame):
-        cls.execute_query(f"DELETE FROM exame WHERE id = {id_exame}")
+        cls.execute_query(f"DELETE FROM exame WHERE id_exame = {id_exame}")
 
     @classmethod
     def edit_exame(cls, nome_exame, desc_exame, data_exame):

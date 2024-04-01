@@ -3,7 +3,7 @@ from features.Database import DataMethods
 
 def main(page: Page):
     DataMethods.initialize()
-    print(DataMethods.verify_login('cleiton@gmail.com','cleiton'))
+    #LEMBRAR DE ARRUMAR OS UPDATE
     page.add(Text("Hello World!"))
     page.add(Text("Leozin do bololo", size=40))
     page.title = '4Health'
