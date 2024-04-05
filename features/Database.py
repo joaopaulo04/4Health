@@ -9,6 +9,7 @@ class DataMethods():
     def create_connection(cls):
         connection = connect(f'{DATABASE_NAME}')
         return connection
+        
     #Metodo para executar querys
     @classmethod
     def execute_query(cls, query):
@@ -17,6 +18,7 @@ class DataMethods():
         cursor.execute(query)
         connection.commit()
         connection.close()
+        
     #Metodo para identificar se o banco ja existe ou nao
     @classmethod
     def initialize(cls):
@@ -67,6 +69,7 @@ class DataMethods():
                               f'nome_exame TEXT NOT NULL,'
                               f'desc_exame TEXT,'
                               f'data_exame TEXT NOT NULL)')
+            
     #Metodo para ver valores do banco
     @classmethod
     def show_users(cls):
@@ -117,7 +120,11 @@ class DataMethods():
         cls.execute_query(f"DELETE FROM usuarios WHERE id_usuario = {id_usuario}")
     @classmethod
     def edit_users(cls, id_usuario, senha, telefone, altura, peso):
-        cls.execute_query(f"UPDATE usuarios SET senha = '{senha}',telefone = {telefone}, altura = {altura}, peso = {peso} WHERE id_usuario = {id_usuario}")
+        cls.execute_query(f"UPDATE usuarios SET senha = '{senha}',"
+                          f"telefone = {telefone}, "
+                          f"altura = {altura}, "
+                          f"peso = {peso} "
+                          f"WHERE id_usuario = {id_usuario};")
 
     #Metodos para adicionar/remover/editar calendario
     @classmethod
@@ -138,12 +145,12 @@ class DataMethods():
         cls.execute_query(f"DELETE FROM agenda WHERE id_agendamento = {id_agendamento}")
     @classmethod
     def edit_agenda(cls, id_agendamento, titulo_evento, desc_evento, data_evento, hora_evento):
-        cls.execute_query(f"UPDATE agenda SET"
-                          f"titulo_evento = '{titulo_evento}',"
-                          f"desc_evento = {desc_evento},"
-                          f"data_evento = {data_evento},"
-                          f"hora_evento = {hora_evento}"
+        cls.execute_query(f"UPDATE agenda SET titulo_evento = '{titulo_evento}',"
+                          f"desc_evento = '{desc_evento}',"
+                          f"data_evento = '{data_evento}',"
+                          f"hora_evento = '{hora_evento}'"
                           f"WHERE id_agendamento = {id_agendamento}")
+        
     #Metodos para adicionar/remover/editar remedios
     @classmethod
     def add_remedio(cls, id_usuario, nome_remedio, desc_remedio, intervalo_uso, primeiro_uso):
@@ -163,11 +170,11 @@ class DataMethods():
         cls.execute_query(f"DELETE FROM remedio WHERE id_remedio = {id_remedio}")
     @classmethod
     def edit_remedio(cls, nome_remedio, desc_remedio, intervalo_uso, primeiro_uso):
-        cls.execute_query(f"UPDATE remedio SET"
-                          f"nome_remedio = {nome_remedio},"
-                          f"desc_remedio = {desc_remedio},"
-                          f"intervalo_uso = {intervalo_uso},"
-                          f"primeiro_uso = {primeiro_uso}")
+        cls.execute_query(f"UPDATE remedio SET nome_remedio = {nome_remedio},"
+                          f"desc_remedio = '{desc_remedio}',"
+                          f"intervalo_uso = '{intervalo_uso}',"
+                          f"primeiro_uso = '{primeiro_uso}'")
+        
     #Metodos para adicionar/remover/editar consultas
     @classmethod
     def add_consulta(cls, id_usuario, nome_consulta, desc_consulta, data_consulta):
@@ -185,10 +192,10 @@ class DataMethods():
 
     @classmethod
     def edit_consulta(cls, nome_consulta, desc_consulta, data_consulta):
-        cls.execute_query(f"UPDATE remedio SET"
-                          f"nome_consulta = {nome_consulta},"
-                          f"desc_consulta = {desc_consulta},"
-                          f"data_consulta = {data_consulta}")
+        cls.execute_query(f"UPDATE remedio SET nome_consulta = '{nome_consulta}',"
+                          f"desc_consulta = '{desc_consulta}',"
+                          f"data_consulta = '{data_consulta}'")
+        
     #Metodos para adicionar/remover/editar exames
     @classmethod
     def add_exame(cls, id_usuario, nome_exame, desc_exame, data_exame):
@@ -207,7 +214,6 @@ class DataMethods():
 
     @classmethod
     def edit_exame(cls, nome_exame, desc_exame, data_exame):
-        cls.execute_query(f"UPDATE exame SET"
-                          f"nome_exame = {nome_exame},"
-                          f"desc_exame = {desc_exame},"
-                          f"data_exame = {data_exame}")
+        cls.execute_query(f"UPDATE exame SET nome_exame = '{nome_exame}',"
+                          f"desc_exame = '{desc_exame}',"
+                          f"data_exame = '{data_exame}'")
