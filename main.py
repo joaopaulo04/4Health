@@ -1,15 +1,20 @@
 from flet import *
 from features.Database import DataMethods
+from features.FletRouter import Router
+
 
 def main(page: Page):
     DataMethods.initialize()
-    page.add(Text("Hello World!"))
+    myrouter = Router(page)
+    page.on_route_change = myrouter.route_change
+    page.add(myrouter.body)
     page.title = '4Health'
     page.theme_mode = ThemeMode.LIGHT
     page.window_width = 400
     page.window_height = 800
     page.window_resizable = False
     page.update()
+
 
 if __name__ == '__main__':
     app(target=main)
