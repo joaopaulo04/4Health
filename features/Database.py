@@ -33,20 +33,12 @@ class DataMethods():
                               f'nome TEXT NOT NULL,'
                               f'email TEXT UNIQUE NOT NULL,'
                               f'senha TEXT NOT NULL,'
-                              f'data_nascimento INTEGER NOT NULL,'
+                              f'data_nascimento TEXT NOT NULL,'
                               f'sexo TEXT NOT NULL,'
                               f'telefone INTEGER NOT NULL,'
                               f'tipo_sanguineo TEXT NOT NULL,'
-                              f'altura INTEGER NOT NULL,'
-                              f'peso INTEGER NOT NULL)')
-
-            cls.execute_query(f'CREATE TABLE IF NOT EXISTS agenda('
-                              f'id_agendamento INTEGER PRIMARY KEY AUTOINCREMENT,'
-                              f'id_usuario INTEGER NOT NULL references usuarios(id_usuario),'
-                              f'titulo_evento TEXT NOT NULL,'
-                              f'desc_evento TEXT,'
-                              f'data_evento TEXT NOT NULL,'
-                              f'hora_evento TEXT NOT NULL)')
+                              f'altura REAL NOT NULL,'
+                              f'peso REAL    NOT NULL)')
 
             cls.execute_query(f'CREATE TABLE IF NOT EXISTS remedio('
                               f'id_remedio INTEGER PRIMARY KEY AUTOINCREMENT,'
@@ -61,6 +53,7 @@ class DataMethods():
                               f'id_usuario INTEGER NOT NULL references usuarios(id_usuario),'
                               f'nome_consulta TEXT NOT NULL,'
                               f'desc_consulta TEXT,'
+                              f'hora_consulta TEXT NOT NULL,'
                               f'data_consulta TEXT NOT NULL)')
 
             cls.execute_query(f'CREATE TABLE IF NOT EXISTS exame('
@@ -68,6 +61,7 @@ class DataMethods():
                               f'id_usuario INTEGER NOT NULL references usuarios(id_usuario),'
                               f'nome_exame TEXT NOT NULL,'
                               f'desc_exame TEXT,'
+                              f'hora_exame TEXT NOT NULL,'
                               f'data_exame TEXT NOT NULL)')
             
     #Metodo para ver valores do banco
@@ -79,6 +73,33 @@ class DataMethods():
         usuarios = cursor.fetchall()
         connection.close()
         return usuarios
+    @classmethod
+    def show_exames(cls, id_usuario):
+        connection = cls.create_connection()
+        cursor = connection.cursor()
+        cursor.execute(f'SELECT * FROM exame WHERE id_usuario = {id_usuario}')
+        exame = cursor.fetchall()
+        connection.close()
+        return exame
+
+    @classmethod
+    def show_consultas(cls, id_usuario):
+        connection = cls.create_connection()
+        cursor = connection.cursor()
+        cursor.execute(f'SELECT * FROM consulta WHERE id_usuario = {id_usuario}')
+        consulta = cursor.fetchall()
+        connection.close()
+        return consulta
+    @classmethod
+    def show_remedios(cls, id_usuario):
+        connection = cls.create_connection()
+        cursor = connection.cursor()
+        cursor.execute(f'SELECT * FROM remedio WHERE id_usuario = {id_usuario}')
+        remedio = cursor.fetchall()
+        connection.close()
+        return remedio
+
+
     #Metodo para verificar login
 
     @classmethod
@@ -102,11 +123,11 @@ class DataMethods():
     def add_users(cls, nome, email, senha, data_nascimento, sexo, telefone, tipo_sanguineo, altura, peso):
         connection = cls.create_connection()
         cursor = connection.cursor()
-        cursor.execute(f"INSERT INTO usuarios(nome, email, senha, data_nascimento, sexo, telefone , tipo_sanguineo, altura, peso) VALUES"
-                       f"('{nome}',"
+        cursor.execute(f"INSERT INTO usuarios(nome, email, senha, data_nascimento, sexo, telefone , tipo_sanguineo, altura, peso) VALUES ("
+                       f"'{nome}',"
                        f"'{email}',"
                        f"'{senha}',"
-                       f"{data_nascimento},"
+                       f"'{data_nascimento}',"
                        f"'{sexo}',"
                        f"{telefone},"
                        f"'{tipo_sanguineo}',"
@@ -125,95 +146,69 @@ class DataMethods():
                           f"altura = {altura}, "
                           f"peso = {peso} "
                           f"WHERE id_usuario = {id_usuario};")
-
-    #Metodos para adicionar/remover/editar calendario
-    @classmethod
-    def add_agenda(cls,id_usuario, titulo_evento, desc_evento, data_evento, hora_evento):
-        connection = cls.create_connection()
-        cursor = connection.cursor()
-        cursor.execute(f"INSERT INTO agenda(id_usuario, titulo_evento, desc_evento, data_evento, hora_evento)VALUES"
-                       f"{id_usuario},"
-                       f"'{titulo_evento}',"
-                       f"'{desc_evento}',"
-                       f"'{data_evento}',"
-                       f"'{hora_evento}'"
-                       f")")
-        connection.commit()
-        connection.close()
-    @classmethod
-    def remove_agenda(cls, id_agendamento):
-        cls.execute_query(f"DELETE FROM agenda WHERE id_agendamento = {id_agendamento}")
-    @classmethod
-    def edit_agenda(cls, id_agendamento, titulo_evento, desc_evento, data_evento, hora_evento):
-        cls.execute_query(f"UPDATE agenda SET titulo_evento = '{titulo_evento}',"
-                          f"desc_evento = '{desc_evento}',"
-                          f"data_evento = '{data_evento}',"
-                          f"hora_evento = '{hora_evento}'"
-                          f"WHERE id_agendamento = {id_agendamento}")
         
     #Metodos para adicionar/remover/editar remedios
     @classmethod
     def add_remedio(cls, id_usuario, nome_remedio, desc_remedio, intervalo_uso, primeiro_uso):
-        connection = cls.create_connection()
-        cursor = connection.cursor()
-        cursor.execute(f"INSERT INTO remedio (id_usuario, nome_remedio, desc_remedio, intervalo_uso, primeiro_uso) VALUES"
-                       f"({id_usuario},"
+        cls.execute_query(f"INSERT INTO remedio(id_usuario, nome_remedio, desc_remedio, intervalo_uso, primeiro_uso) VALUES("
+                       f"{id_usuario},"
                        f"'{nome_remedio}',"
                        f"'{desc_remedio}',"
                        f"'{intervalo_uso}',"
                        f"'{primeiro_uso}'"
                        f")")
-        connection.commit()
-        connection.close()
+
     @classmethod
     def remove_remedio(cls, id_remedio):
-        cls.execute_query(f"DELETE FROM remedio WHERE id_remedio = {id_remedio}")
+        cls.execute_query(f"DELETE FROM remedio WHERE id_remedio = {id_remedio};")
     @classmethod
-    def edit_remedio(cls, nome_remedio, desc_remedio, intervalo_uso, primeiro_uso):
-        cls.execute_query(f"UPDATE remedio SET nome_remedio = {nome_remedio},"
+    def edit_remedio(cls,id_remedio, nome_remedio, desc_remedio, intervalo_uso, primeiro_uso):
+        cls.execute_query(f"UPDATE remedio SET nome_remedio = '{nome_remedio}',"
                           f"desc_remedio = '{desc_remedio}',"
                           f"intervalo_uso = '{intervalo_uso}',"
-                          f"primeiro_uso = '{primeiro_uso}'")
+                          f"primeiro_uso = '{primeiro_uso}'"
+                          f"WHERE id_remedio = {id_remedio};")
         
     #Metodos para adicionar/remover/editar consultas
     @classmethod
-    def add_consulta(cls, id_usuario, nome_consulta, desc_consulta, data_consulta):
-        connection = cls.create_connection()
-        cursor = connection.cursor()
-        cursor.execute(f"INSERT INTO consulta (id_usuario, nome_consulta, desc_consulta, data_consulta) VALUES"
-                       f"({id_usuario},"
+    def add_consulta(cls, id_usuario, nome_consulta, desc_consulta, hora_consulta, data_consulta):
+        cls.execute_query(f"INSERT INTO consulta (id_usuario, nome_consulta, desc_consulta, hora_consulta, data_consulta) VALUES ("
+                       f"{id_usuario},"
                        f"'{nome_consulta}',"
                        f"'{desc_consulta}',"
+                       f"'{hora_consulta}',"
                        f"'{data_consulta}'"
                        f")")
     @classmethod
     def remove_consulta(cls, id_consulta):
-        cls.execute_query(f"DELETE FROM consulta WHERE id_consulta = {id_consulta}")
+        cls.execute_query(f"DELETE FROM consulta WHERE id_consulta = {id_consulta};")
 
     @classmethod
-    def edit_consulta(cls, nome_consulta, desc_consulta, data_consulta):
-        cls.execute_query(f"UPDATE remedio SET nome_consulta = '{nome_consulta}',"
+    def edit_consulta(cls, id_consulta, nome_consulta, desc_consulta, data_consulta, hora_consulta):
+        cls.execute_query(f"UPDATE consulta SET nome_consulta = '{nome_consulta}',"
                           f"desc_consulta = '{desc_consulta}',"
-                          f"data_consulta = '{data_consulta}'")
+                          f"data_consulta = '{data_consulta}',"
+                          f"hora_consulta ='{hora_consulta}'"
+                          f"WHERE id_consulta = {id_consulta};")
         
     #Metodos para adicionar/remover/editar exames
     @classmethod
-    def add_exame(cls, id_usuario, nome_exame, desc_exame, data_exame):
-        connection = cls.create_connection()
-        cursor = connection.cursor()
-        cursor.execute(f"INSERT INTO exame (id_usuario, nome_exame, desc_exame, data_exame)VALUES"
-                       f"({id_usuario},"
+    def add_exame(cls, id_usuario, nome_exame, desc_exame, data_exame, hora_exame):
+        cls.execute_query(f"INSERT INTO exame(id_usuario, nome_exame, desc_exame, data_exame, hora_exame) VALUES("
+                       f"{id_usuario},"
                        f"'{nome_exame}',"
                        f"'{desc_exame}',"
-                       f"'{data_exame}'"
+                       f"'{data_exame}',"
+                       f"'{hora_exame}'"
                        f")")
 
     @classmethod
     def remove_exame(cls, id_exame):
-        cls.execute_query(f"DELETE FROM exame WHERE id_exame = {id_exame}")
+        cls.execute_query(f"DELETE FROM exame WHERE id_exame = {id_exame};")
 
     @classmethod
-    def edit_exame(cls, nome_exame, desc_exame, data_exame):
+    def edit_exame(cls,id_exame, nome_exame, desc_exame, data_exame, hora_exame):
         cls.execute_query(f"UPDATE exame SET nome_exame = '{nome_exame}',"
                           f"desc_exame = '{desc_exame}',"
-                          f"data_exame = '{data_exame}'")
+                          f"data_exame = '{data_exame}',"
+                          f"hora_exame = '{hora_exame}' WHERE id_exame = {id_exame};")

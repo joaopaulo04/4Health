@@ -3,9 +3,7 @@ from features.Database import DataMethods
 
 def main(page: Page):
     DataMethods.initialize()
-    #LEMBRAR DE ARRUMAR OS UPDATE
     page.add(Text("Hello World!"))
-    page.add(Text("Leozin do bololo", size=40))
     page.title = '4Health'
     page.theme_mode = ThemeMode.LIGHT
     page.window_width = 400
