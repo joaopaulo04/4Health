@@ -6,12 +6,13 @@ from features.FletRouter import Router
 def main(page: Page):
     DataMethods.initialize()
     myrouter = Router(page)
+    page.padding = 0
     page.on_route_change = myrouter.route_change
     page.add(myrouter.body)
     page.title = '4Health'
     page.theme_mode = ThemeMode.LIGHT
-    page.window_width = 400
-    page.window_height = 800
+    page.window_width = 430
+    page.window_height = 830
     page.window_resizable = False
     page.update()
 

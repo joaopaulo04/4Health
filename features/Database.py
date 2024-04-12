@@ -63,7 +63,8 @@ class DataMethods():
                               f'desc_exame TEXT,'
                               f'hora_exame TEXT NOT NULL,'
                               f'data_exame TEXT NOT NULL)')
-            
+            DataMethods.add_users("Arthur", "arthur.faria@gmail.com", "arthur123", "24/08/2004", "M", 19995128382, "A+",1.70, 86.4)
+
     #Metodo para ver valores do banco
     @classmethod
     def show_users(cls):
@@ -73,6 +74,7 @@ class DataMethods():
         usuarios = cursor.fetchall()
         connection.close()
         return usuarios
+
     @classmethod
     def show_exames(cls, id_usuario):
         connection = cls.create_connection()
@@ -90,6 +92,7 @@ class DataMethods():
         consulta = cursor.fetchall()
         connection.close()
         return consulta
+
     @classmethod
     def show_remedios(cls, id_usuario):
         connection = cls.create_connection()
@@ -101,7 +104,6 @@ class DataMethods():
 
 
     #Metodo para verificar login
-
     @classmethod
     def verify_login(cls, email: str, senha: str) -> bool:
         connection = cls.create_connection()
@@ -117,6 +119,7 @@ class DataMethods():
             else:
                 continue
         connection.close()
+        return False
 
     #Metodos para adicionar/remover/editar usuarios(table)
     @classmethod
@@ -139,6 +142,7 @@ class DataMethods():
     @classmethod
     def remove_users(cls, id_usuario):
         cls.execute_query(f"DELETE FROM usuarios WHERE id_usuario = {id_usuario}")
+
     @classmethod
     def edit_users(cls, id_usuario, senha, telefone, altura, peso):
         cls.execute_query(f"UPDATE usuarios SET senha = '{senha}',"
@@ -161,6 +165,7 @@ class DataMethods():
     @classmethod
     def remove_remedio(cls, id_remedio):
         cls.execute_query(f"DELETE FROM remedio WHERE id_remedio = {id_remedio};")
+
     @classmethod
     def edit_remedio(cls,id_remedio, nome_remedio, desc_remedio, intervalo_uso, primeiro_uso):
         cls.execute_query(f"UPDATE remedio SET nome_remedio = '{nome_remedio}',"
@@ -179,6 +184,7 @@ class DataMethods():
                        f"'{hora_consulta}',"
                        f"'{data_consulta}'"
                        f")")
+
     @classmethod
     def remove_consulta(cls, id_consulta):
         cls.execute_query(f"DELETE FROM consulta WHERE id_consulta = {id_consulta};")
