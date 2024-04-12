@@ -4,6 +4,7 @@ from features.FletRouter import Router
 
 
 def main(page: Page):
+    # Main
     DataMethods.initialize()
     myrouter = Router(page)
     page.padding = 0
