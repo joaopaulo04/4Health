@@ -150,6 +150,11 @@ class DataMethods():
                           f"altura = {altura}, "
                           f"peso = {peso} "
                           f"WHERE id_usuario = {id_usuario};")
+
+    @classmethod
+    def edit_user_password(cls, id_usuario, senha):
+        cls.execute_query(f"UPDATE usuarios SET senha = '{senha}'"
+                          f"WHERE id_usuario = {id_usuario};")
         
     #Metodos para adicionar/remover/editar remedios
     @classmethod
