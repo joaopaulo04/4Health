@@ -172,6 +172,12 @@ class DataMethods():
                           f"altura = {altura}, "
                           f"peso = {peso} "
                           f"WHERE id_usuario = {id_usuario};")
+    @classmethod
+    def edit_password(cls, email: str, senha: str):
+        #Criando conexão com o banco
+        connection = cls.create_connection()
+        cls.execute_query(f"UPDATE usuarios SET senha = '{senha}' WHERE email = '{email}';")
+        connection.close()
 
     # Metodos para adicionar/remover/editar remedios
     @classmethod

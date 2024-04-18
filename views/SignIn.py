@@ -75,7 +75,7 @@ def signin(page):
         if len(password) < 8:
             valid = False
             error_messages.append("Sua senha deve ter no mínimo 8 caracteres")
-        if not any(char.isalnum() for char in password):
+        if not any(char.isalpha() for char in password) or not any(char.isdigit() for char in password):
             valid = False
             error_messages.append("Sua senha deve conter letras e números")
 
@@ -155,7 +155,7 @@ def signin(page):
                     *map(Text, error_messages),
                 ]),
                 actions=[
-                    Row([TextButton("OK", on_click=close_dialog)],alignment=MainAxisAlignment.CENTER)
+                    Row([TextButton("OK", on_click=close_dialog)], alignment=MainAxisAlignment.CENTER)
                 ],
             )
             page.dialog.open = True
