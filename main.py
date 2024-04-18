@@ -7,10 +7,11 @@ def main(page: Page):
     # Main
     DataMethods.initialize()
     myrouter = Router(page)
+    print(DataMethods.show_users())
     page.padding = 0
     page.on_route_change = myrouter.route_change
     page.add(myrouter.body)
-    page.title = '4Health'
+    page.title = 'ForHealth'
     page.theme_mode = ThemeMode.LIGHT
     page.window_width = 430
     page.window_height = 830

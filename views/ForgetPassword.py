@@ -23,7 +23,7 @@ def forgetpassword(page):
         page.client_storage.set("email", email)
         generated_token = generate_token()
         message = MIMEText(f"Seu token de acesso: {generated_token}")
-        message['Subject'] = 'Token de autenticação 4Health'
+        message['Subject'] = 'Token de autenticação ForHealth'
         message['From'] = 'email_4Health' #opção less secureemail_4Health
         message['To'] = email
 
