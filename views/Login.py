@@ -10,6 +10,10 @@ def login(page):
 
     def send_home(e):
         if DataMethods.verify_login(login_textfield.value, password_textfield.value):
+            data = DataMethods.show_users()
+            for user in data:
+                if user[2] == login_textfield.value:
+                    page.client_storage.set("logged_user_id", user[0])
             page.go("/")
         else:
             login_textfield.value = ""

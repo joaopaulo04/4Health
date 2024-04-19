@@ -18,7 +18,6 @@ class Router:
         self.body = Container(content=self.routes['/login'])
 
     def route_change(self, route):
-        print(route.route)
         if route.route in ('/login', '/signin', '/forgetpassword', '/updatepassword'):
             self.routes = {
                 "/login": login(self.page),
