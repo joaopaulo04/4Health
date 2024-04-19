@@ -6,7 +6,7 @@ from features.FletRouter import Router
 def main(page: Page):
     # Main
     DataMethods.initialize()
-    #DataMethods.add_users("Arthur", "arthur_de_faria@outlook.com", 52716328811, "arthur123", "24/08/2004", "M", 19995128382, "A+", "1.72", "80")
+    # DataMethods.add_users("Arthur", "arthur_de_faria@outlook.com", 52716328811, "arthur123", "24/08/2004", "M", 19995128382, "A+", "1.72", "80")
     myrouter = Router(page)
     print(DataMethods.show_users())
     page.padding = 0

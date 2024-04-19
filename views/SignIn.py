@@ -41,6 +41,9 @@ def validate_cpf(cpf):
 
     return True
 
+bool_bar1 = False
+
+bool_bar2 = False
 
 def signin(page):
 
@@ -173,6 +176,9 @@ def signin(page):
                                   weight_textfield.value)
             page.go("/")
 
+    def format_date(e):
+        pass
+
     name_textfield = TextField(label="Nome", width=315, filled=True, bgcolor=colors.WHITE)
     name_row = Row([name_textfield], alignment=MainAxisAlignment.CENTER)
 
@@ -209,7 +215,7 @@ def signin(page):
     cpf_textfield = TextField(label="CPF", width=315, filled=True, bgcolor=colors.WHITE, keyboard_type= KeyboardType.NUMBER, hint_text="Apenas números")
     cpf_row = Row([cpf_textfield], alignment=MainAxisAlignment.CENTER)
 
-    birth_textfield = TextField(label="Data de nascimento", width=190, filled=True, bgcolor=colors.WHITE, hint_text="DD/MM/YYYY")
+    birth_textfield = TextField(label="Data de nascimento", width=190, filled=True, bgcolor=colors.WHITE, hint_text="DD/MM/YYYY", on_change=format_date)
     birth_row = Row([birth_textfield], alignment=MainAxisAlignment.CENTER)
 
     sex_dropdown = Dropdown(label="Sexo", width=115, options=[
@@ -226,39 +232,30 @@ def signin(page):
     register_button = ElevatedButton(content=Text("Cadastrar", size=15), on_click=send_register, style=ButtonStyle(padding={MaterialState.DEFAULT: 18}), width=140)
     register_button_row = Row([register_button], alignment=MainAxisAlignment.CENTER)
 
-    def back_to_login(e):
+    def send_login(e):
         page.go("/login")
 
-    back_button = IconButton(
-        icon=icons.ARROW_BACK,
-        on_click=back_to_login,
-        style=ButtonStyle(padding=Padding(top=0, right=0, bottom=0, left=0)),
-    )
-
-    content = Column(
-        scroll=ScrollMode.ALWAYS,
-        controls=[
-            Row(controls=[back_button], alignment=MainAxisAlignment.START),
-            Row(controls=[Text("Cadastro", size=20, weight=FontWeight.W_700)], alignment=MainAxisAlignment.CENTER),
-            name_row,
-            Text("", height=5),
-            email_row,
-            Text("", height=5),
-            password_row,
-            Text("", height=5),
-            confirm_password_row,
-            Text("", height=5),
-            weight_height_blood_type_row,
-            Text("", height=5),
-            cpf_row,
-            Text("", height=5),
-            sex_birth_row,
-            Text("", height=5),
-            phone_row,
-            Text("", height=5),
-            register_button_row
-        ],
-    )
+    content = Stack(
+        [Column(
+            [Text("", height=50),
+             Row([IconButton(icon=icons.ARROW_CIRCLE_LEFT_OUTLINED, on_click=send_login, icon_color=colors.BLACK,
+                             icon_size=35),
+                  Text("")],
+                 alignment=MainAxisAlignment.SPACE_AROUND)]
+        ),
+            Column(controls=[Text("", height=60),
+                             Row(controls=[Text("Cadastro", size=20, weight=FontWeight.W_700)],
+                                 alignment=MainAxisAlignment.CENTER),
+                             name_row,
+                             email_row,
+                             password_row,
+                             confirm_password_row,
+                             weight_height_blood_type_row,
+                             cpf_row,
+                             sex_birth_row,
+                             phone_row,
+                             register_button_row
+                             ], alignment=MainAxisAlignment.CENTER)])
 
     return content
 

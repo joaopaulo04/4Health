@@ -166,11 +166,12 @@ class DataMethods():
         cls.execute_query(f"DELETE FROM usuarios WHERE id_usuario = {id_usuario}")
 
     @classmethod
-    def edit_users(cls, id_usuario, senha, telefone, altura, peso):
+    def edit_users(cls, id_usuario, senha, telefone, altura, peso, tipo_sanguineo):
         cls.execute_query(f"UPDATE usuarios SET senha = '{senha}',"
                           f"telefone = {telefone}, "
                           f"altura = {altura}, "
-                          f"peso = {peso} "
+                          f"peso = {peso},"
+                          f"tipo_sanguineo = '{tipo_sanguineo}'"
                           f"WHERE id_usuario = {id_usuario};")
     @classmethod
     def edit_password(cls, email: str, senha: str):
