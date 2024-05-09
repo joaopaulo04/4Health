@@ -43,17 +43,84 @@ class Calendar(Container):
         dates = sorted(dates, key=lambda x: self.to_datetime(x[5] + ' ' + x[4]))
         return dates
 
+    @staticmethod
+    def sort_meds(dates):
+        dates.sort(key=lambda x: x[5])
+        return dates
+
     def verify_output(self):
         id_user = self.page.client_storage.get("logged_user_id")
         consultas = DataMethods.show_consultas(id_user)
         consultas = self.sort_dates(consultas)
         exames = DataMethods.show_exames(id_user)
         exames = self.sort_dates(exames)
-        if not consultas and exames:
+        remedios = DataMethods.show_remedios(id_user)
+        remedios = self.sort_meds(remedios)
+        if not consultas and not exames and not remedios:
             return Column([Text(height=10), Row([Text("Nenhum evento agendado até o momento!", size=15, weight=FontWeight.BOLD)], alignment=MainAxisAlignment.CENTER)])
         else:
             blocks = Column([], scroll=ScrollMode.ALWAYS, width=355)
             output = Container(width=370, height=235, padding=padding.all(15), content=blocks)
+
+            for remedio in remedios:
+                hora_remedio = datetime.strptime(remedio[5], "%H:%M").time()
+                if hora_remedio < datetime.now().time():
+                    plus_hour = int(remedio[4][0:2])
+                    past_hour = int(remedio[5][0:2])
+                    future_hour = past_hour + plus_hour
+                    if future_hour >= 24:
+                        future_hour = future_hour - 24
+                    future_hour = str(future_hour).zfill(2)
+                    plus_minutes = int(remedio[4][3:5])
+                    past_minutes = int(remedio[5][3:5])
+                    future_minutes = past_minutes + plus_minutes
+                    if future_minutes >= 60:
+                        future_minutes = future_minutes - 60
+                    future_minutes = str(future_minutes).zfill(2)
+                    teste = future_hour + ":" + future_minutes
+                    DataMethods.edit_remedio(remedio[0], remedio[2], remedio[3], remedio[4], teste)
+                consulta_block = Container(border_radius=15,
+                                           height=60,
+                                           width=355,
+                                           bgcolor=colors.BLUE,
+                                           padding=padding.only(top=5, left=5, right=5),
+                                           content=Stack([
+                                               Container(
+                                                   Text(
+                                                       f"{remedio[5][0]}" + f"{remedio[5][1]}" + f"{remedio[5][2]}" + f"{remedio[5][3]}" + f"{remedio[5][4]}",
+                                                       size=25,
+                                                       weight=FontWeight.W_900,
+                                                       color=colors.WHITE),
+                                                   padding=padding.only(top=8, left=8, right=8, bottom=8),
+                                                   border_radius=10,
+                                                   bgcolor=colors.BLUE_300,
+                                                   width=92,
+                                                   height=48
+                                               ),
+                                               Row([
+                                                   Text("              "),
+                                                   Text(f"{remedio[2]}",
+                                                        size=20,
+                                                        color=colors.WHITE,
+                                                        weight=FontWeight.W_600),
+                                                   Text(),
+                                                   Text()],
+                                                   height=45,
+                                                   alignment=MainAxisAlignment.SPACE_BETWEEN),
+                                               Column([Text(height=15), Row([
+                                                   Text("              "),
+                                                   Text(f"{remedio[3]}",
+                                                        size=15,
+                                                        color=colors.WHITE,
+                                                        weight=FontWeight.W_400),
+                                                   Text(),
+                                                   Text()],
+                                                   height=32,
+                                                   alignment=MainAxisAlignment.SPACE_BETWEEN), ],
+                                                      height=48, ),
+                                           ])
+                                           )
+                blocks.controls.append(consulta_block)
             for consulta in consultas:
                 consulta_block = Container(border_radius=15,
                                            height=60,
