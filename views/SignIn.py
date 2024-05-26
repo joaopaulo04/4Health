@@ -191,10 +191,10 @@ def signin(page):
     confirm_password_textfield = TextField(label="Confirme a senha", width=315, filled=True, bgcolor=colors.WHITE, password=True, can_reveal_password=True)
     confirm_password_row = Row([confirm_password_textfield], alignment=MainAxisAlignment.CENTER)
 
-    weight_textfield = TextField(label="Peso", width=60, filled=True, bgcolor=colors.WHITE, keyboard_type= KeyboardType.NUMBER, hint_text="kg")
+    weight_textfield = TextField(label="Peso", width=60, filled=True, bgcolor=colors.WHITE, keyboard_type=KeyboardType.NUMBER, hint_text="kg")
     weight_row = Row([weight_textfield], alignment=MainAxisAlignment.CENTER)
 
-    height_textfield = TextField(label="Altura", width=70, filled=True, bgcolor=colors.WHITE, keyboard_type= KeyboardType.NUMBER, hint_text="m")
+    height_textfield = TextField(label="Altura", width=70, filled=True, bgcolor=colors.WHITE, keyboard_type=KeyboardType.NUMBER, hint_text="m")
     height_row = Row([height_textfield], alignment=MainAxisAlignment.CENTER)
 
     blood_type_dropdown = Dropdown(label="Tipo sanguíneo", width=165, options=[

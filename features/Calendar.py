@@ -4,6 +4,7 @@ from calendar import *
 from datetime import *
 from features.Database import DataMethods
 import operator
+import re
 
 BORDER_COLOR = colors.BLUE
 ICON_COLOR = colors.GREY
@@ -35,8 +36,17 @@ class Calendar(Container):
 
     @staticmethod
     def to_datetime(date_time_str):
+        '''def validate_time_str(time_str):
+            pattern = r'^\d{2}:\d{2}$'
+            match = re.match(pattern, time_str)
+            if match:
+                return True
+            else:
+                return False
+            if validate_time_str(time_str):'''
         date_str, time_str = date_time_str.split(' ', 1)
         return tuple(map(int, date_str.split('/'))) + tuple(map(int, time_str.split(':')))
+
 
     def sort_dates(self, dates):
         dates.sort(key=operator.itemgetter(5, 4), reverse=True)
@@ -356,7 +366,17 @@ class Calendar(Container):
                     day_button = Container(width=40, height=40, border_radius=border_radius.all(10))
                 week_row.controls.append(day_button)
             calendar_column.controls.append(week_row)
-
+        print(self.current_day)
+        dia = self.selected_day
+        print(self.selected_day)
+        print(self.current_month)
+        self.page.client_storage.set("number_month", self.current_month)
+        self.page.client_storage.set("year", self.current_year)
+        self.page.client_storage.set("month", month)
+        if self.selected_day is not None:
+            self.page.client_storage.set("dia_1", dia)
+        if self.selected_day is None:
+            self.page.client_storage.set("dia_1", self.current_day)
         self.calendar_container.content = calendar_column
         return self.calendar_container
 
