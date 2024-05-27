@@ -4,7 +4,7 @@ from features.Database import DataMethods
 
 def exams(page):
     def send_newevent(e):
-        page.go("/editexams")
+        page.go("/newevent")
 
     def get_user_data():
         id_user = page.client_storage.get("logged_user_id")
@@ -12,6 +12,11 @@ def exams(page):
         for user in data:
             if user[0] == id_user:
                 return user
+
+    '''def get_exam_id():
+        data = DataMethods.show_exames(user[0])
+        for exam in data:
+                return exam[0][1]'''
 
     def add_exam(e):
         mes = str(month)
@@ -54,6 +59,7 @@ def exams(page):
     year = page.client_storage.get("ano")
 
     user = get_user_data()
+    '''exam = get_exam_id()'''
 
     name_text = Text("Nome :", width=300, bgcolor=colors.WHITE, weight=FontWeight.BOLD)
     name_row = Row([name_text], alignment=MainAxisAlignment.CENTER)

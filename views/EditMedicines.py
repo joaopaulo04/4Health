@@ -3,10 +3,8 @@ from features.Database import DataMethods
 
 
 def editmedicines(page):
-    def send_newevent(e):
-        page.go("/newevent")
-    name_text = Text("Nome :", width=300, bgcolor=colors.WHITE, weight=FontWeight.BOLD)
-    name_row = Row([name_text], alignment=MainAxisAlignment.CENTER)
+    def send_calendar(e):
+        page.go("/calendar")
 
     def get_user_data():
         id_user = page.client_storage.get("logged_user_id")
@@ -16,9 +14,10 @@ def editmedicines(page):
                 return user
 
     def get_id_medicines():
-        data_medicines = DataMethods.show_remedios(user[0])
-        for medicines in data_medicines:
-            if medicines[1] == user[0]:
+        medicines_id = page.client_storage.get("remedio_id")
+        data = DataMethods.show_remedios(user[0])
+        for medicines in data:
+            if medicines[0] == medicines_id:
                 return medicines
 
     def edit_medicine(e):
@@ -102,6 +101,11 @@ def editmedicines(page):
             page.dialog.open = True
         page.update()
 
+    def delete_medicines(e):
+        DataMethods.remove_remedio(medicines[0])
+        page.navigation_bar = ""
+        page.go("/calendar")
+
     def close_dialog(e):
         page.dialog.open = False
         page.update()
@@ -110,19 +114,38 @@ def editmedicines(page):
 
     medicines = get_id_medicines()
 
-    name_textfield = TextField(label="Remédio ...", width=300, bgcolor=colors.WHITE, filled=True)
+    name_text = Text("Nome :", width=300, bgcolor=colors.WHITE, weight=FontWeight.BOLD)
+    name_row = Row([name_text], alignment=MainAxisAlignment.CENTER)
+
+    if medicines is not None:
+        name_textfield = TextField(label="Remédio ...", width=300, bgcolor=colors.WHITE, value=medicines[2],
+                                   disabled=False)
+        notes_textfield = TextField(label="Ex: Tomar remédio após o almoço", width=300, bgcolor=colors.WHITE,
+                                    value=medicines[3], disabled=False)
+        first_portion_textfield = TextField(label="Ex: 12:00", width=120, bgcolor=colors.WHITE,
+                                            value=medicines[5], disabled=False)
+        time_textfield = TextField(label="Ex: 08:00", width=165, bgcolor=colors.WHITE, value=medicines[4],
+                                   disabled=False)
+
+    else:
+        name_textfield = TextField(label="Remédio ...", width=300, bgcolor=colors.WHITE, value="", disabled=False)
+        notes_textfield = TextField(label="Ex: Tomar remédio após o almoço", width=300, bgcolor=colors.WHITE,
+                                    value="", disabled=False)
+        first_portion_textfield = TextField(label="Ex: 12:00", width=120, bgcolor=colors.WHITE,
+                                            value="09:00", disabled=False)
+        time_textfield = TextField(label="Ex: 08:00", width=165, bgcolor=colors.WHITE, value="10:00",
+                                   disabled=False)
+
     name_textfield_row = Row([name_textfield], alignment=MainAxisAlignment.CENTER)
 
     notes_text = Text("Anotações :", width=300, bgcolor=colors.WHITE, weight=FontWeight.BOLD)
     notes_row = Row([notes_text], alignment=MainAxisAlignment.CENTER)
 
-    notes_textfield = TextField(label="Ex: Tomar remédio após o almoço", width=300, bgcolor=colors.WHITE, filled=True)
     notes_textfield_row = Row([notes_textfield], alignment=MainAxisAlignment.CENTER)
 
     first_portion = Text("Primeira dose :", width=120, bgcolor=colors.WHITE, weight=FontWeight.BOLD)
     first_portion_row = Row([first_portion], alignment=MainAxisAlignment.CENTER)
 
-    first_portion_textfield = TextField(label="Ex: 12:00", width=120, bgcolor=colors.WHITE, filled=True)
     first_portion_textfield_row = Row([first_portion_textfield], alignment=MainAxisAlignment.CENTER)
 
     column_first_portion = Column(controls=[first_portion_row, first_portion_textfield_row])
@@ -130,7 +153,6 @@ def editmedicines(page):
     time_text = Text("Tomar remédio a cada :", width=165, bgcolor=colors.WHITE, weight=FontWeight.BOLD)
     time_row = Row([time_text], alignment=MainAxisAlignment.CENTER)
 
-    time_textfield = TextField(label="Ex: 08:00", width=165, bgcolor=colors.WHITE, filled=True)
     time_textfield_row = Row([time_textfield], alignment=MainAxisAlignment.CENTER)
 
     column_time = Column(controls=[time_row, time_textfield_row])
@@ -142,14 +164,14 @@ def editmedicines(page):
                                  width=200, on_click=edit_medicine)
     save_button_row = Row([save_button], alignment=MainAxisAlignment.CENTER)
 
-    delete_button = ElevatedButton(content=Text("Excluir", size=15, color=colors.WHITE), on_click=send_newevent, style=ButtonStyle(padding={MaterialState.DEFAULT: 18}, bgcolor=colors.RED_700), width=200)
+    delete_button = ElevatedButton(content=Text("Excluir", size=15, color=colors.WHITE), on_click=delete_medicines, style=ButtonStyle(padding={MaterialState.DEFAULT: 18}, bgcolor=colors.RED_700), width=200)
     delete_button_row = Row([delete_button], alignment=MainAxisAlignment.CENTER)
 
     content = Stack([Column(controls=[Text("", height=45),
                                       Row(controls=[Text(width=40), IconButton(icon=icons.ARROW_CIRCLE_LEFT_OUTLINED,
                                                                                icon_color=colors.BLACK,
-                                                                               on_click=send_newevent,
-                                                                               icon_size=35),
+                                                                               icon_size=35,
+                                                                               on_click=send_calendar),
                                                     Text(width=40),
                                                     Text("Remédios",
                                                          size=20,

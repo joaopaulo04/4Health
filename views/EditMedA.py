@@ -3,8 +3,8 @@ from features.Database import DataMethods
 
 
 def editmeda(page):
-    def send_newevent(e):
-        page.go("/newevent")
+    def send_calendar(e):
+        page.go("/calendar")
 
     def get_user_data():
         id_user = page.client_storage.get("logged_user_id")
@@ -14,9 +14,10 @@ def editmeda(page):
                 return user
 
     def get_id_meda():
-        data_meda = DataMethods.show_consultas(user[0])
-        for meda in data_meda:
-            if meda[1] == user[0]:
+        meda_id = page.client_storage.get("consulta_id")
+        data = DataMethods.show_consultas(user[0])
+        for meda in data:
+            if meda[0] == meda_id:
                 return meda
 
     def edit_medicalappointment(e):
@@ -77,20 +78,44 @@ def editmeda(page):
     name_text = Text("Nome :", width=300, bgcolor=colors.WHITE, weight=FontWeight.BOLD)
     name_row = Row([name_text], alignment=MainAxisAlignment.CENTER)
 
-    name_textfield = TextField(label="Consulta de ...", width=300, bgcolor=colors.WHITE, filled=True)
+    if meda is not None:
+        name_textfield = TextField(label="Consulta de ...", width=300, bgcolor=colors.WHITE, value=meda[2],
+                                   disabled=False)
+        notes_textfield = TextField(label="Ex: Anotar principais sintomas", width=300, bgcolor=colors.WHITE,
+                                    value=meda[3], disabled=False)
+        date_textfield = TextField(label="17/10/2001", width=120, bgcolor=colors.WHITE, value=meda[5], disabled=False)
+        time_textfield = TextField(label="Ex: 15:45", width=100, bgcolor=colors.WHITE, value=meda[4], disabled=False)
+
+    else:
+        name_textfield = TextField(label="Consulta de ...", width=300, bgcolor=colors.WHITE, value="",
+                                   disabled=False)
+        notes_textfield = TextField(label="Ex: Anotar principais sintomas", width=300, bgcolor=colors.WHITE,
+                                    value="", disabled=False)
+        date_textfield = TextField(label="17/10/2001", width=120, bgcolor=colors.WHITE, value="20/12/2004", disabled=False)
+        time_textfield = TextField(label="Ex: 15:45", width=100, bgcolor=colors.WHITE, value="8:00", disabled=False)
+
     name_textfield_row = Row([name_textfield], alignment=MainAxisAlignment.CENTER)
 
     notes_text = Text("Anotações :", width=300, bgcolor=colors.WHITE, weight=FontWeight.BOLD)
     notes_row = Row([notes_text], alignment=MainAxisAlignment.CENTER)
 
-    notes_textfield = TextField(label="Ex: Anotar principais sintomas", width=300, bgcolor=colors.WHITE, filled=True)
     notes_textfield_row = Row([notes_textfield], alignment=MainAxisAlignment.CENTER)
+
+    date_text = Text("Data :", width=70, bgcolor=colors.WHITE, weight=FontWeight.BOLD)
+    date_row = Row([date_text], alignment=MainAxisAlignment.CENTER)
+
+    date_textfield_row = Row([date_textfield], alignment=MainAxisAlignment.CENTER)
+
+    column_date = Column(controls=[date_row, date_textfield_row])
 
     time_text = Text("Horário :", width=70, bgcolor=colors.WHITE, weight=FontWeight.BOLD)
     time_row = Row([time_text], alignment=MainAxisAlignment.CENTER)
 
-    time_textfield = TextField(label="Ex: 15:45", width=100, bgcolor=colors.WHITE, filled=True)
     time_textfield_row = Row([time_textfield], alignment=MainAxisAlignment.CENTER)
+
+    column_time = Column(controls=[time_row, time_textfield_row])
+
+    date_time_row = Row([column_time, column_date], alignment=MainAxisAlignment.CENTER)
 
     save_button = ElevatedButton(content=Text("Editar", size=15, color=colors.WHITE),
                                  style=ButtonStyle(padding={MaterialState.DEFAULT: 18}, bgcolor=colors.BLACK), on_click=edit_medicalappointment,
@@ -103,7 +128,7 @@ def editmeda(page):
     content = Stack([Column(controls=[Text("", height=45),
                                       Row(controls=[Text(width=40), IconButton(icon=icons.ARROW_CIRCLE_LEFT_OUTLINED,
                                                                                icon_color=colors.BLACK,
-                                                                               on_click=send_newevent,
+                                                                               on_click=send_calendar,
                                                                                icon_size=35),
                                                     Text(width=5),
                                                     Text("Consultas Médicas",
@@ -116,8 +141,7 @@ def editmeda(page):
                                       notes_row,
                                       notes_textfield_row,
                                       Text(height=10),
-                                      time_row,
-                                      time_textfield_row,
+                                      date_time_row,
                                       Text(height=22),
                                       save_button_row,
                                       delete_button_row

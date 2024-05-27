@@ -74,6 +74,6 @@ def editprofile(page):
                              Text(height=5),
                              update_user_row,
                              Text(height=1),
-                             delete_user_row], scroll=ScrollMode.ALWAYS, height=550)
+                             delete_user_row], scroll=ScrollMode.ALWAYS, height=500)
                              ])])
     return content

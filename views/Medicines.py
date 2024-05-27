@@ -5,8 +5,6 @@ from features.Database import DataMethods
 def medicines(page):
     def send_newevent(e):
         page.go("/newevent")
-    name_text = Text("Nome :", width=300, bgcolor=colors.WHITE, weight=FontWeight.BOLD)
-    name_row = Row([name_text], alignment=MainAxisAlignment.CENTER)
 
     def get_user_data():
         id_user = page.client_storage.get("logged_user_id")
@@ -101,6 +99,9 @@ def medicines(page):
         page.update()
 
     user = get_user_data()
+
+    name_text = Text("Nome :", width=300, bgcolor=colors.WHITE, weight=FontWeight.BOLD)
+    name_row = Row([name_text], alignment=MainAxisAlignment.CENTER)
 
     name_textfield = TextField(label="Remédio ...", width=300, bgcolor=colors.WHITE, filled=True)
     name_textfield_row = Row([name_textfield], alignment=MainAxisAlignment.CENTER)

@@ -174,7 +174,7 @@ def signin(page):
                                   blood_type_dropdown.value,
                                   height_textfield.value,
                                   weight_textfield.value)
-            page.go("/")
+            page.go("/login")
 
     def format_date(e):
         pass

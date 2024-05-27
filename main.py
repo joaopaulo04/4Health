@@ -5,8 +5,6 @@ from features.FletRouter import *
 
 def main(page: Page):
     DataMethods.initialize()
-    DataMethods.add_users("Arthur", "arthur_de_faria@outlook.com", 52716328811, "arthur123", "24/08/2004", "M", 19995128382, "A+", "1.72", "80")
-    DataMethods.add_exame(1, "Colonoscopia", "Clínica 4Health", "28/04/2026", "09:00")
     print(DataMethods.show_users())
     print(DataMethods.show_exames(1))
     myrouter = Router(page)
