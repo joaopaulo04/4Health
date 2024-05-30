@@ -31,6 +31,7 @@ class Calendar(Container):
                                             border=border.all(2, BORDER_COLOR),
                                             border_radius=border_radius.all(10),
                                             alignment=alignment.bottom_center)
+        self.output = None
 
         self.output = self.verify_output()
 
@@ -69,6 +70,8 @@ class Calendar(Container):
         exames = self.sort_dates(exames)
         remedios = DataMethods.show_remedios(id_user)
         remedios = self.sort_meds(remedios)
+        # if self.selected_day is None:
+        #     return Text("Teste")
         if not consultas and not exames and not remedios:
             return Column([Text(height=10),
                            Row([Text("Nenhum evento agendado até o momento!", size=15, weight=FontWeight.BOLD)],
@@ -236,12 +239,128 @@ class Calendar(Container):
                 blocks.controls.append(exame_block)
             return output
 
+    def verify_day_output(self, data):
+        id_user = self.page.client_storage.get("logged_user_id")
+        consultas = DataMethods.show_consultas(id_user)
+        consultas = self.sort_dates(consultas)
+        exames = DataMethods.show_exames(id_user)
+        exames = self.sort_dates(exames)
+        remedios = DataMethods.show_remedios(id_user)
+        remedios = self.sort_meds(remedios)
+
+
+        blocks = Column([], scroll=ScrollMode.ALWAYS, width=355)
+        output = Container(width=370, height=235, content=blocks)
+
+        for consulta in consultas:
+            if consulta[5] == data:
+                consulta_block = Container(border_radius=15,
+                                           height=60,
+                                           width=355,
+                                           bgcolor=colors.BLUE,
+                                           padding=padding.only(top=5, left=5, right=5),
+                                           content=Stack([
+                                               Container(
+                                                   Text(
+                                                       f"{consulta[5][0]}" + f"{consulta[5][1]}" + f"{consulta[5][2]}" + f"{consulta[5][3]}" + f"{consulta[5][4]}",
+                                                       size=25,
+                                                       weight=FontWeight.W_900,
+                                                       color=colors.WHITE),
+                                                   padding=padding.only(top=8, left=8, right=8, bottom=8),
+                                                   border_radius=10,
+                                                   bgcolor=colors.BLUE_300,
+                                                   width=92,
+                                                   height=48
+                                               ),
+                                               Row([
+                                                   Text("              "),
+                                                   Text(f"{consulta[2]}",
+                                                        size=18,
+                                                        color=colors.WHITE,
+                                                        weight=FontWeight.W_600),
+                                                   Text(),
+                                                   Text()],
+                                                   height=45,
+                                                   alignment=MainAxisAlignment.SPACE_BETWEEN),
+                                               Column([Text(height=15), Row([
+                                                   Text("              "),
+                                                   Text(f" - {consulta[3]}",
+                                                        size=15,
+                                                        color=colors.WHITE,
+                                                        weight=FontWeight.W_400),
+                                                   Text(),
+                                                   Text()],
+                                                   height=32,
+                                                   alignment=MainAxisAlignment.SPACE_BETWEEN), ],
+                                                      height=48, ),
+                                               Row([Text("  "),
+                                                    Text(f"{consulta[4]}",
+                                                         size=11,
+                                                         color=colors.WHITE,
+                                                         weight=FontWeight.W_600),
+                                                    Text("           ")
+                                                    ], alignment=MainAxisAlignment.SPACE_BETWEEN),
+
+                                           ]), on_click=lambda e, id=consulta[0]: self.send_editmeda(e, id))
+                blocks.controls.append(consulta_block)
+        for exame in exames:
+            if exame[5] == data:
+                exame_block = Container(border_radius=15,
+                                        height=60,
+                                        width=355,
+                                        bgcolor=colors.GREEN,
+                                        padding=padding.only(top=5, left=5, right=5),
+                                        content=Stack([
+                                            Container(
+                                                Text(
+                                                    f"{exame[5][0]}" + f"{exame[5][1]}" + f"{exame[5][2]}" + f"{exame[5][3]}" + f"{exame[5][4]}",
+                                                    size=25,
+                                                    weight=FontWeight.W_900,
+                                                    color=colors.WHITE),
+                                                padding=padding.only(top=8, left=8, right=8, bottom=8),
+                                                border_radius=10,
+                                                bgcolor=colors.GREEN_300,
+                                                width=92,
+                                                height=48
+                                            ),
+                                            Row([
+                                                Text("              "),
+                                                Text(f"{exame[2]}",
+                                                     size=18,
+                                                     color=colors.WHITE,
+                                                     weight=FontWeight.W_600),
+                                                Text(),
+                                                Text()],
+                                                height=44,
+                                                alignment=MainAxisAlignment.SPACE_BETWEEN),
+                                            Column([Text(height=15), Row([
+                                                Text("              "),
+                                                Text(f" - {exame[3]}",
+                                                     size=15,
+                                                     color=colors.WHITE,
+                                                     weight=FontWeight.W_400),
+                                                Text(),
+                                                Text()],
+                                                height=32,
+                                                alignment=MainAxisAlignment.SPACE_BETWEEN), ],
+                                                   height=48, ),
+                                            Row([Text(""),
+                                                 Text(f"{exame[4]}",
+                                                      size=11,
+                                                      color=colors.WHITE,
+                                                      weight=FontWeight.W_600),
+                                                 Text("           ")
+                                                 ], alignment=MainAxisAlignment.SPACE_BETWEEN),
+                                        ]), on_click=lambda e, id=exame[0]: self.send_editexams(e, id))
+                blocks.controls.append(exame_block)
+        return output
+
     def selected_date(self, e):
         data = e.control.data
         self.selected_day = data[0] + data[1]
-        self.output.value = e.control.data
+        self.output.content = self.verify_day_output(data)
         self.build()
-        self.page.update()
+        e.page.update()
 
     def get_next(self, e):
         current = date(self.current_year, self.current_month, self.current_day)
