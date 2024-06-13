@@ -8,13 +8,13 @@ from features.Calendar import Calendar
 def home(page):
     def send_edit(e):
         page.go("/editprofile")
+
     def get_user_data():
         id_user = page.client_storage.get("logged_user_id")
         data = DataMethods.show_users()
         for user in data:
             if user[0] == id_user:
                 return user
-
 
     def send_editmedicines(e, medicines_id):
         page.client_storage.set("remedio_id", medicines_id)
@@ -27,16 +27,20 @@ def home(page):
     def send_editexams(self, e, exame_id):
         page.client_storage.set("exame_id", exame_id)
         page.go("/editexams")
+
     def sort_meds(dates):
         dates.sort(key=lambda x: x[5])
         return dates
+
     def sort_dates(dates):
         dates.sort(key=operator.itemgetter(5, 4), reverse=True)
         dates = sorted(dates, key=lambda x: to_datetime(x[5] + ' ' + x[4]))
         return dates
+
     def to_datetime(date_time_str):
         date_str, time_str = date_time_str.split(' ', 1)
         return tuple(map(int, date_str.split('/'))) + tuple(map(int, time_str.split(':')))
+
     def verify_output():
         id_user = page.client_storage.get("logged_user_id")
         consultas = DataMethods.show_consultas(id_user)
@@ -52,7 +56,7 @@ def home(page):
                                alignment=MainAxisAlignment.CENTER)])
         else:
             blocks = Column([], scroll=ScrollMode.ALWAYS, width=355)
-            output = Container(width=370, height=235, padding=padding.all(15), content=blocks)
+            output = Container(width=370, height=375, padding=padding.all(15), content=blocks)
 
             for remedio in remedios:
                 hora_remedio = datetime.strptime(remedio[5], "%H:%M").time()
@@ -71,21 +75,21 @@ def home(page):
                     future_minutes = str(future_minutes).zfill(2)
                     teste = future_hour + ":" + future_minutes
                     DataMethods.edit_remedio(remedio[0], remedio[2], remedio[3], remedio[4], teste)
-                consulta_block = Container(border_radius=15,
+                remedio_block = Container(border_radius=15,
                                            height=60,
                                            width=355,
-                                           bgcolor=colors.BLUE,
+                                           bgcolor=colors.GREEN,
                                            padding=padding.only(top=5, left=5, right=5),
                                            content=Stack([
                                                Container(
                                                    Text(
                                                        f"{remedio[5][0]}" + f"{remedio[5][1]}" + f"{remedio[5][2]}" + f"{remedio[5][3]}" + f"{remedio[5][4]}",
-                                                       size=25,
+                                                       size=32,
                                                        weight=FontWeight.W_900,
                                                        color=colors.WHITE),
                                                    padding=padding.only(top=8, left=8, right=8, bottom=8),
                                                    border_radius=10,
-                                                   bgcolor=colors.BLUE_300,
+                                                   bgcolor=colors.GREEN_300,
                                                    width=92,
                                                    height=48
                                                ),
@@ -111,7 +115,7 @@ def home(page):
                                                    alignment=MainAxisAlignment.SPACE_BETWEEN), ],
                                                       height=48, ),
                                            ]), on_click=lambda e, id=remedio[0]: send_editmedicines(e, id))
-                blocks.controls.append(consulta_block)
+                blocks.controls.append(remedio_block)
             for consulta in consultas:
                 consulta_block = Container(border_radius=15,
                                            height=60,
@@ -122,7 +126,7 @@ def home(page):
                                                Container(
                                                    Text(
                                                        f"{consulta[5][0]}" + f"{consulta[5][1]}" + f"{consulta[5][2]}" + f"{consulta[5][3]}" + f"{consulta[5][4]}",
-                                                       size=25,
+                                                       size=32,
                                                        weight=FontWeight.W_900,
                                                        color=colors.WHITE),
                                                    padding=padding.only(top=8, left=8, right=8, bottom=8),
@@ -166,18 +170,18 @@ def home(page):
                 exame_block = Container(border_radius=15,
                                         height=60,
                                         width=355,
-                                        bgcolor=colors.GREEN,
+                                        bgcolor=colors.RED,
                                         padding=padding.only(top=5, left=5, right=5),
                                         content=Stack([
                                             Container(
                                                 Text(
                                                     f"{exame[5][0]}" + f"{exame[5][1]}" + f"{exame[5][2]}" + f"{exame[5][3]}" + f"{exame[5][4]}",
-                                                    size=25,
+                                                    size=32,
                                                     weight=FontWeight.W_900,
                                                     color=colors.WHITE),
                                                 padding=padding.only(top=8, left=8, right=8, bottom=8),
                                                 border_radius=10,
-                                                bgcolor=colors.GREEN_300,
+                                                bgcolor=colors.RED_300,
                                                 width=92,
                                                 height=48
                                             ),

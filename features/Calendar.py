@@ -97,21 +97,21 @@ class Calendar(Container):
                     future_minutes = str(future_minutes).zfill(2)
                     teste = future_hour + ":" + future_minutes
                     DataMethods.edit_remedio(remedio[0], remedio[2], remedio[3], remedio[4], teste)
-                consulta_block = Container(border_radius=15,
+                remedio_block = Container(border_radius=15,
                                            height=60,
                                            width=355,
-                                           bgcolor=colors.BLUE,
+                                           bgcolor=colors.GREEN,
                                            padding=padding.only(top=5, left=5, right=5),
                                            content=Stack([
                                                Container(
                                                    Text(
                                                        f"{remedio[5][0]}" + f"{remedio[5][1]}" + f"{remedio[5][2]}" + f"{remedio[5][3]}" + f"{remedio[5][4]}",
-                                                       size=25,
+                                                       size=32,
                                                        weight=FontWeight.W_900,
                                                        color=colors.WHITE),
                                                    padding=padding.only(top=8, left=8, right=8, bottom=8),
                                                    border_radius=10,
-                                                   bgcolor=colors.BLUE_300,
+                                                   bgcolor=colors.GREEN_300,
                                                    width=92,
                                                    height=48
                                                ),
@@ -137,7 +137,7 @@ class Calendar(Container):
                                                    alignment=MainAxisAlignment.SPACE_BETWEEN), ],
                                                       height=48, ),
                                            ]), on_click=lambda e, id=remedio[0]: self.send_editmedicines(e, id))
-                blocks.controls.append(consulta_block)
+                blocks.controls.append(remedio_block)
             for consulta in consultas:
                 consulta_block = Container(border_radius=15,
                                            height=60,
@@ -148,7 +148,7 @@ class Calendar(Container):
                                                Container(
                                                    Text(
                                                        f"{consulta[5][0]}" + f"{consulta[5][1]}" + f"{consulta[5][2]}" + f"{consulta[5][3]}" + f"{consulta[5][4]}",
-                                                       size=25,
+                                                       size=32,
                                                        weight=FontWeight.W_900,
                                                        color=colors.WHITE),
                                                    padding=padding.only(top=8, left=8, right=8, bottom=8),
@@ -192,18 +192,18 @@ class Calendar(Container):
                 exame_block = Container(border_radius=15,
                                         height=60,
                                         width=355,
-                                        bgcolor=colors.GREEN,
+                                        bgcolor=colors.RED,
                                         padding=padding.only(top=5, left=5, right=5),
                                         content=Stack([
                                             Container(
                                                 Text(
                                                     f"{exame[5][0]}" + f"{exame[5][1]}" + f"{exame[5][2]}" + f"{exame[5][3]}" + f"{exame[5][4]}",
-                                                    size=25,
+                                                    size=32,
                                                     weight=FontWeight.W_900,
                                                     color=colors.WHITE),
                                                 padding=padding.only(top=8, left=8, right=8, bottom=8),
                                                 border_radius=10,
-                                                bgcolor=colors.GREEN_300,
+                                                bgcolor=colors.RED_300,
                                                 width=92,
                                                 height=48
                                             ),
