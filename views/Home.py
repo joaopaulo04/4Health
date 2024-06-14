@@ -225,7 +225,7 @@ def home(page):
     #edit com ola, usuario
     edit_user = IconButton(icon=icons.EDIT, icon_color=colors.BLACK, on_click=send_edit, icon_size=35)
     list_ola_nome_edit = [column_list_ola_nome,edit_user]
-    row_nome_edit = Row(spacing=200, controls=list_ola_nome_edit)
+    row_nome_edit = Row(spacing=220, controls=list_ola_nome_edit)
 
     #remedio com nome e horario
     remedios = DataMethods.show_remedios(user[0])
@@ -236,7 +236,7 @@ def home(page):
 
     if remedios != []:
         remedio = remedios[0]
-        nome_medication = Text(f"   {remedio[2]}", size=20,width=200)
+        nome_medication = Text(f"   {remedio[2]}", size=20,width=170)
         hora_medication = Text(f"           {remedio[5]}", size=20,weight=FontWeight.BOLD)
 
     medication_icon_container = Container(content=Row([medication_icon]))
@@ -246,9 +246,10 @@ def home(page):
     info_medication = Column(spacing=15, controls=medication)
 
     #stackando remedio com o fundo
+    fundo_vermelho = Container(width=175, height=125, bgcolor="#D28E79", border_radius=10,opacity=0.5)
     stack_medication = Stack(
         [
-            Container(width=175, height=125, bgcolor="#D28E79", border_radius=10,opacity=0.5),
+            fundo_vermelho,
             info_medication
         ]
     )
@@ -284,15 +285,19 @@ def home(page):
     info_imc = Row(controls=junto_imc, spacing=10)
 
     # stackando imc com o fundo
+    fundo_verde = Container(width=175, height=125, bgcolor="#63B147", border_radius=10, opacity=0.5)
     stack_imc = Stack(
         [
-            Container(width=175, height=125, bgcolor="#63B147", border_radius=5,opacity=0.5),
+            fundo_verde,
             info_imc
         ]
     )
-    espaco_remedio_imc = Text("",size=5)
-    remedio_imc = [espaco_remedio_imc,stack_medication,espaco_remedio_imc, stack_imc]
-    row_medication_imc = Row(spacing=15, controls=remedio_imc)
+    #espaco_remedio_imc = Text("",size=5)
+    segundo_remedio_imc = Text("",width=26)
+    primeiro_remedio_imc = Text("", width=19)
+
+    remedio_imc = [primeiro_remedio_imc,stack_medication,segundo_remedio_imc ,stack_imc]
+    row_medication_imc = Row(spacing=0, controls=remedio_imc)
 
     #eventos proximos
     eventos_proximos = Text("   Eventos proximos:", size=20, weight=FontWeight.BOLD)
