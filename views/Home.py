@@ -250,7 +250,7 @@ def home(page):
     info_medication = Column(spacing=15, controls=medication)
 
     #stackando remedio com o fundo
-    fundo_vermelho = Container(width=164, height=125, bgcolor="#D28E79", border_radius=10,opacity=0.5)
+    fundo_vermelho = Container(width=160, height=125, bgcolor="#D28E79", border_radius=10,opacity=0.5)
     stack_medication = Stack(
         [
             fundo_vermelho,
@@ -289,7 +289,7 @@ def home(page):
     info_imc = Row(controls=junto_imc, spacing=10)
 
     # stackando imc com o fundo
-    fundo_verde = Container(width=164, height=125, bgcolor="#63B147", border_radius=10, opacity=0.5)
+    fundo_verde = Container(width=160, height=125, bgcolor="#63B147", border_radius=10, opacity=0.5)
     stack_imc = Stack(
         [
             fundo_verde,
