@@ -250,7 +250,7 @@ def home(page):
     info_medication = Column(spacing=15, controls=medication)
 
     #stackando remedio com o fundo
-    fundo_vermelho = Container(width=175, height=125, bgcolor="#D28E79", border_radius=10,opacity=0.5)
+    fundo_vermelho = Container(width=164, height=125, bgcolor="#D28E79", border_radius=10,opacity=0.5)
     stack_medication = Stack(
         [
             fundo_vermelho,
@@ -268,11 +268,11 @@ def home(page):
     elif imc_numero >= 25 and imc_numero <= 29.9:
         imc = Text("Acima do peso", size=20,width=95, weight=FontWeight.BOLD)
     elif imc_numero >= 30 and imc_numero <= 34.9:
-        imc = Text("Obesidade 1º Grau", size=20,width=105, weight=FontWeight.BOLD)
+        imc = Text("Obesidade 1º Grau", size=19,width=105, weight=FontWeight.BOLD)
     elif imc_numero >= 35 and imc_numero <= 39.9:
-        imc = Text("Obesidade 2º Grau", size=20,width=105, weight=FontWeight.BOLD)
+        imc = Text("Obesidade 2º Grau", size=19,width=105, weight=FontWeight.BOLD)
     elif imc_numero >= 40:
-        imc = Text("Obesidade 3º Grau", size=20,width=105, weight=FontWeight.BOLD)
+        imc = Text("Obesidade 3º Grau", size=19,width=105, weight=FontWeight.BOLD)
 
     imc_valor = Container(content=Row([imc]))
     imc_valor.padding = padding.only(top=35)
@@ -289,7 +289,7 @@ def home(page):
     info_imc = Row(controls=junto_imc, spacing=10)
 
     # stackando imc com o fundo
-    fundo_verde = Container(width=175, height=125, bgcolor="#63B147", border_radius=10, opacity=0.5)
+    fundo_verde = Container(width=164, height=125, bgcolor="#63B147", border_radius=10, opacity=0.5)
     stack_imc = Stack(
         [
             fundo_verde,
