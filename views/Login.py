@@ -1,7 +1,6 @@
 from flet import *
 from features.Database import DataMethods
-
-
+from features.User import User
 
 def login(page):
 
@@ -10,7 +9,7 @@ def login(page):
 
     def send_home(e):
         if DataMethods.verify_login(login_textfield.value, password_textfield.value):
-            data = DataMethods.show_users()
+            data = User.show_users()
             for user in data:
                 if user[2] == login_textfield.value:
                     page.client_storage.set("logged_user_id", user[0])

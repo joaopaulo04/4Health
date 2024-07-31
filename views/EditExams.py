@@ -1,5 +1,6 @@
 from flet import *
-from features.Database import DataMethods
+from features.User import User
+from features.Exam import Exam
 from datetime import *
 
 
@@ -10,14 +11,14 @@ def editexams(page):
 
     def get_user_data():
         id_user = page.client_storage.get("logged_user_id")
-        data = DataMethods.show_users()
+        data = User.show_users()
         for user in data:
             if user[0] == id_user:
                 return user
 
     def get_exam_id():
         exame_id = page.client_storage.get("exame_id")
-        data = DataMethods.show_exames(user[0])
+        data = Exam.show_exames(user[0])
         for exam in data:
             if exam[0] == exame_id:
                 return exam
@@ -35,10 +36,10 @@ def editexams(page):
 
                 try:
                     datetime.strptime(date_textfield.value, "%d/%m/%Y")
-                    DataMethods.edit_exame(exam[0], name_textfield.value, notes_textfield.value, exam[5],
+                    Exam.edit_exame(exam[0], name_textfield.value, notes_textfield.value, exam[5],
                                            time_textfield.value)
                     page.navigation_bar = ""
-                    print(DataMethods.show_exames(user[0]))
+                    print(Exam.show_exames(user[0]))
                     page.go("/calendar")
                 except ValueError:
                     page.dialog = AlertDialog(
@@ -59,10 +60,10 @@ def editexams(page):
 
                 try:
                     datetime.strptime(date_textfield.value, "%d/%m/%Y")
-                    DataMethods.edit_exame(exam[0], name_textfield.value, notes_textfield.value, date_textfield.value,
+                    Exam.edit_exame(exam[0], name_textfield.value, notes_textfield.value, date_textfield.value,
                                            time_textfield.value)
                     page.navigation_bar = ""
-                    print(DataMethods.show_exames(user[0]))
+                    print(Exam.show_exames(user[0]))
                     page.go("/calendar")
                 except ValueError:
                     page.dialog = AlertDialog(
@@ -83,7 +84,7 @@ def editexams(page):
         page.update()
 
     def delete_exam(e):
-        DataMethods.remove_exame(exam[0])
+        Exam.remove_exame(exam[0])
         page.navigation_bar = ""
         page.go("/calendar")
 

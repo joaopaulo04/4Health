@@ -1,6 +1,9 @@
 from flet import *
 from features.NavBar import on_change
-from features.Database import DataMethods
+from features.User import User
+from features.Medicine import Medicine
+from features.Appointment import Appointment
+from features.Exam import Exam
 from datetime import *
 import operator
 from features.Calendar import Calendar
@@ -11,7 +14,7 @@ def home(page):
 
     def get_user_data():
         id_user = page.client_storage.get("logged_user_id")
-        data = DataMethods.show_users()
+        data = User.show_users()
         for user in data:
             if user[0] == id_user:
                 return user
@@ -43,11 +46,11 @@ def home(page):
 
     def verify_output():
         id_user = page.client_storage.get("logged_user_id")
-        consultas = DataMethods.show_consultas(id_user)
+        consultas = Appointment.show_consultas(id_user)
         consultas = sort_dates(consultas)
-        exames = DataMethods.show_exames(id_user)
+        exames = Exam.show_exames(id_user)
         exames = sort_dates(exames)
-        remedios = DataMethods.show_remedios(id_user)
+        remedios = Medicine.show_remedios(id_user)
         remedios = sort_meds(remedios)
 
         if not consultas and not exames and not remedios:
@@ -74,7 +77,7 @@ def home(page):
                         future_minutes = future_minutes - 60
                     future_minutes = str(future_minutes).zfill(2)
                     teste = future_hour + ":" + future_minutes
-                    DataMethods.edit_remedio(remedio[0], remedio[2], remedio[3], remedio[4], teste)
+                    Medicine.edit_remedio(remedio[0], remedio[2], remedio[3], remedio[4], teste)
                 remedio_block = Container(border_radius=15,
                                            height=60,
                                            width=355,
@@ -232,7 +235,7 @@ def home(page):
     row_nome_edit = Row(spacing=220, controls=list_ola_nome_edit)
 
     #remedio com nome e horario
-    remedios = DataMethods.show_remedios(user[0])
+    remedios = Medicine.show_remedios(user[0])
     remedios = sort_meds(remedios)
     medication_icon = Icon(name=icons.MEDICATION, color=colors.RED, size=30)
     nome_medication = Text(f'   Sem remédios', size=20)

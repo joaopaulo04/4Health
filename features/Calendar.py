@@ -1,8 +1,10 @@
+from features.Appointment import Appointment
+from features.Exam import Exam
+from features.Medicine import Medicine
 from dateutil import relativedelta
 from flet import *
 from calendar import *
 from datetime import *
-from features.Database import DataMethods
 import operator
 
 
@@ -64,11 +66,11 @@ class Calendar(Container):
 
     def verify_output(self):
         id_user = self.page.client_storage.get("logged_user_id")
-        consultas = DataMethods.show_consultas(id_user)
+        consultas = Appointment.show_consultas(id_user)
         consultas = self.sort_dates(consultas)
-        exames = DataMethods.show_exames(id_user)
+        exames = Exam.show_exames(id_user)
         exames = self.sort_dates(exames)
-        remedios = DataMethods.show_remedios(id_user)
+        remedios = Medicine.show_remedios(id_user)
         remedios = self.sort_meds(remedios)
         # if self.selected_day is None:
         #     return Text("Teste")
@@ -96,7 +98,7 @@ class Calendar(Container):
                         future_minutes = future_minutes - 60
                     future_minutes = str(future_minutes).zfill(2)
                     teste = future_hour + ":" + future_minutes
-                    DataMethods.edit_remedio(remedio[0], remedio[2], remedio[3], remedio[4], teste)
+                    Medicine.edit_remedio(remedio[0], remedio[2], remedio[3], remedio[4], teste)
                 remedio_block = Container(border_radius=15,
                                            height=60,
                                            width=355,
@@ -241,11 +243,11 @@ class Calendar(Container):
 
     def verify_day_output(self, data):
         id_user = self.page.client_storage.get("logged_user_id")
-        consultas = DataMethods.show_consultas(id_user)
+        consultas = Appointment.show_consultas(id_user)
         consultas = self.sort_dates(consultas)
-        exames = DataMethods.show_exames(id_user)
+        exames = Exam.show_exames(id_user)
         exames = self.sort_dates(exames)
-        remedios = DataMethods.show_remedios(id_user)
+        remedios = Medicine.show_remedios(id_user)
         remedios = self.sort_meds(remedios)
 
 

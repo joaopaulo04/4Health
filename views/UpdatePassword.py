@@ -1,5 +1,5 @@
 from flet import *
-from features.Database import DataMethods
+from features.User import User
 from views.ForgetPassword import *
 
 
@@ -31,7 +31,7 @@ def updatepassword(page):
             email = page.client_storage.get("email")
             print("1 ", email)
             if password_textfield.value == password_confirmation_textfield.value:
-                DataMethods.edit_password(email, password_textfield.value)
+                User.edit_password(email, password_textfield.value)
                 page.dialog = AlertDialog(
                     content=Row([Text("Senha atualizada com sucesso!", size=18)], alignment=MainAxisAlignment.CENTER),
                     actions=[Row([TextButton("OK", on_click=close_dialog)], alignment=MainAxisAlignment.CENTER)])

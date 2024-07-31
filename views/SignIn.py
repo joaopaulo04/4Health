@@ -1,6 +1,6 @@
 from flet import *
 from datetime import datetime
-from features.Database import DataMethods
+from features.User import User
 
 
 def validate_cpf(cpf):
@@ -41,12 +41,13 @@ def validate_cpf(cpf):
 
     return True
 
+
 bool_bar1 = False
 
 bool_bar2 = False
 
-def signin(page):
 
+def signin(page):
     def close_dialog(e):
         page.dialog.open = False
         page.update()
@@ -55,25 +56,25 @@ def signin(page):
         valid = True
         error_messages = []
 
-        #Validação do nome
-        name = name_textfield.value.strip() # Remove espaços em branco
+        # Validação do nome
+        name = name_textfield.value.strip()  # Remove espaços em branco
         if len(name) < 3 or len(name) > 50:
             valid = False
             error_messages.append("Nome deve ter entre 3 e 50 caracteres.")
 
-        #Validação de email
+        # Validação de email
         email = email_textfield.value.strip()
         if not email_textfield.value.strip():
             valid = False
             error_messages.append("Email é obrigatório")
         else:
             # Verificação se o email já está em uso
-            existing_email = DataMethods.get_user_by_email(email)
+            existing_email = User.get_user_by_email(email)
             if existing_email:
                 valid = False
                 error_messages.append("Este email já está em uso")
 
-        #Validação de senha
+        # Validação de senha
         password = password_textfield.value
         if len(password) < 8:
             valid = False
@@ -82,12 +83,12 @@ def signin(page):
             valid = False
             error_messages.append("Sua senha deve conter letras e números")
 
-        #Validação de confirmação de senha
+        # Validação de confirmação de senha
         if password != confirm_password_textfield.value:
             valid = False
             error_messages.append("As senhas não batem.")
 
-        #Validação de altura
+        # Validação de altura
         try:
             height = float(height_textfield.value)
             if height <= 0:
@@ -97,7 +98,7 @@ def signin(page):
             valid = False
             error_messages.append("Altura inválida (apenas números).")
 
-        #Validação de peso
+        # Validação de peso
         try:
             weight = float(weight_textfield.value)
             if weight <= 0:
@@ -113,43 +114,42 @@ def signin(page):
             valid = False
             error_messages.append("Por favor, selecione um tipo sanguíneo.")
 
-        #Validação de CPF
+        # Validação de CPF
         cpf = cpf_textfield.value.strip()
 
         if not cpf.isdigit() or len(cpf) != 11:
             valid = False
             error_messages.append("CPF inválido (deve conter apenas 11 numeros)")
         else:
-            #Verificação se o CPF já está cadastrado
-            existing_cpf = DataMethods.get_user_by_cpf(cpf)
+            # Verificação se o CPF já está cadastrado
+            existing_cpf = User.get_user_by_cpf(cpf)
             if existing_cpf:
                 valid = False
                 error_messages.append("Este CPF já está cadastrado")
 
-            #Validação de CPF usando a função validate_cpf
+            # Validação de CPF usando a função validate_cpf
             if not validate_cpf(cpf):
                 valid = False
                 error_messages.append("CPF inválido.")
 
-        #Validação da data de nascimento
+        # Validação da data de nascimento
         try:
             datetime.strptime(birth_textfield.value, "%d/%m/%Y")
         except ValueError:
             valid = False
             error_messages.append("Data de nascimento inválida (formato correto: DD/MM/YYYY).")
 
-        #Validação de sexo
+        # Validação de sexo
         sex = sex_dropdown.value
         if not sex:
             valid = False
             error_messages.append("Por favor, selecione um sexo.")
 
-        #Validação de telefone
+        # Validação de telefone
         phone = phone_textfield.value.strip()
         if not phone or len(phone) != 11:
             valid = False
             error_messages.append("Telefone inválido, deve conter 11 algarismos")
-
 
         if not valid:
             page.dialog = AlertDialog(
@@ -164,16 +164,16 @@ def signin(page):
             page.dialog.open = True
             page.update()
         else:
-            DataMethods.add_users(name_textfield.value,
-                                  email_textfield.value,
-                                  cpf_textfield.value,
-                                  password_textfield.value,
-                                  birth_textfield.value,
-                                  sex_dropdown.value,
-                                  phone_textfield.value,
-                                  blood_type_dropdown.value,
-                                  height_textfield.value,
-                                  weight_textfield.value)
+            User.add_users(name_textfield.value,
+                           email_textfield.value,
+                           cpf_textfield.value,
+                           password_textfield.value,
+                           birth_textfield.value,
+                           sex_dropdown.value,
+                           phone_textfield.value,
+                           blood_type_dropdown.value,
+                           height_textfield.value,
+                           weight_textfield.value)
             page.go("/login")
 
     def format_date(e):
@@ -185,16 +185,20 @@ def signin(page):
     email_textfield = TextField(label="Email", width=315, filled=True, bgcolor=colors.WHITE)
     email_row = Row([email_textfield], alignment=MainAxisAlignment.CENTER)
 
-    password_textfield = TextField(label="Senha", width=315, filled=True, bgcolor=colors.WHITE, password=True, can_reveal_password=True)
+    password_textfield = TextField(label="Senha", width=315, filled=True, bgcolor=colors.WHITE, password=True,
+                                   can_reveal_password=True)
     password_row = Row([password_textfield], alignment=MainAxisAlignment.CENTER)
 
-    confirm_password_textfield = TextField(label="Confirme a senha", width=315, filled=True, bgcolor=colors.WHITE, password=True, can_reveal_password=True)
+    confirm_password_textfield = TextField(label="Confirme a senha", width=315, filled=True, bgcolor=colors.WHITE,
+                                           password=True, can_reveal_password=True)
     confirm_password_row = Row([confirm_password_textfield], alignment=MainAxisAlignment.CENTER)
 
-    weight_textfield = TextField(label="Peso", width=60, filled=True, bgcolor=colors.WHITE, keyboard_type=KeyboardType.NUMBER, hint_text="kg")
+    weight_textfield = TextField(label="Peso", width=60, filled=True, bgcolor=colors.WHITE,
+                                 keyboard_type=KeyboardType.NUMBER, hint_text="kg")
     weight_row = Row([weight_textfield], alignment=MainAxisAlignment.CENTER)
 
-    height_textfield = TextField(label="Altura", width=70, filled=True, bgcolor=colors.WHITE, keyboard_type=KeyboardType.NUMBER, hint_text="m")
+    height_textfield = TextField(label="Altura", width=70, filled=True, bgcolor=colors.WHITE,
+                                 keyboard_type=KeyboardType.NUMBER, hint_text="m")
     height_row = Row([height_textfield], alignment=MainAxisAlignment.CENTER)
 
     blood_type_dropdown = Dropdown(label="Tipo sanguíneo", width=165, options=[
@@ -210,12 +214,15 @@ def signin(page):
     ])
     blood_type_dropdown_row = Row([blood_type_dropdown], alignment=MainAxisAlignment.CENTER)
 
-    weight_height_blood_type_row = Row([weight_row, height_row, blood_type_dropdown_row], alignment=MainAxisAlignment.CENTER)
+    weight_height_blood_type_row = Row([weight_row, height_row, blood_type_dropdown_row],
+                                       alignment=MainAxisAlignment.CENTER)
 
-    cpf_textfield = TextField(label="CPF", width=315, filled=True, bgcolor=colors.WHITE, keyboard_type= KeyboardType.NUMBER, hint_text="Apenas números")
+    cpf_textfield = TextField(label="CPF", width=315, filled=True, bgcolor=colors.WHITE,
+                              keyboard_type=KeyboardType.NUMBER, hint_text="Apenas números")
     cpf_row = Row([cpf_textfield], alignment=MainAxisAlignment.CENTER)
 
-    birth_textfield = TextField(label="Data de nascimento", width=190, filled=True, bgcolor=colors.WHITE, hint_text="DD/MM/YYYY", on_change=format_date)
+    birth_textfield = TextField(label="Data de nascimento", width=190, filled=True, bgcolor=colors.WHITE,
+                                hint_text="DD/MM/YYYY", on_change=format_date)
     birth_row = Row([birth_textfield], alignment=MainAxisAlignment.CENTER)
 
     sex_dropdown = Dropdown(label="Sexo", width=115, options=[
@@ -224,12 +231,14 @@ def signin(page):
     ])
     sex_dropdown_row = Row([sex_dropdown], alignment=MainAxisAlignment.CENTER)
 
-    sex_birth_row = Row([birth_row,sex_dropdown_row], alignment=MainAxisAlignment.CENTER)
+    sex_birth_row = Row([birth_row, sex_dropdown_row], alignment=MainAxisAlignment.CENTER)
 
-    phone_textfield = TextField(label="Telefone", width=315, filled=True, bgcolor=colors.WHITE, hint_text="Apenas números")
+    phone_textfield = TextField(label="Telefone", width=315, filled=True, bgcolor=colors.WHITE,
+                                hint_text="Apenas números")
     phone_row = Row([phone_textfield], alignment=MainAxisAlignment.CENTER)
 
-    register_button = ElevatedButton(content=Text("Cadastrar", size=15), on_click=send_register, style=ButtonStyle(padding={MaterialState.DEFAULT: 18}), width=140)
+    register_button = ElevatedButton(content=Text("Cadastrar", size=15), on_click=send_register,
+                                     style=ButtonStyle(padding={MaterialState.DEFAULT: 18}), width=140)
     register_button_row = Row([register_button], alignment=MainAxisAlignment.CENTER)
 
     def send_login(e):
@@ -258,5 +267,3 @@ def signin(page):
                              ], alignment=MainAxisAlignment.CENTER)])
 
     return content
-
-

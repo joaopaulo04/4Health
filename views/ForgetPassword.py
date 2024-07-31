@@ -1,5 +1,4 @@
 from flet import *
-from features.Database import DataMethods
 import uuid
 import smtplib
 from email.mime.text import MIMEText

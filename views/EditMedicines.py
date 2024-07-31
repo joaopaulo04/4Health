@@ -1,5 +1,6 @@
 from flet import *
-from features.Database import DataMethods
+from features.User import User
+from features.Medicine import Medicine
 
 
 def editmedicines(page):
@@ -8,14 +9,14 @@ def editmedicines(page):
 
     def get_user_data():
         id_user = page.client_storage.get("logged_user_id")
-        data = DataMethods.show_users()
+        data = User.show_users()
         for user in data:
             if user[0] == id_user:
                 return user
 
     def get_id_medicines():
         medicines_id = page.client_storage.get("remedio_id")
-        data = DataMethods.show_remedios(user[0])
+        data = Medicine.show_remedios(user[0])
         for medicines in data:
             if medicines[0] == medicines_id:
                 return medicines
@@ -34,7 +35,7 @@ def editmedicines(page):
                             first_portion_textfield.value[2] == ":" and \
                             first_portion_textfield.value[3] in ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9") and \
                             first_portion_textfield.value[4] in ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"):
-                        DataMethods.edit_remedio(medicines[0], name_textfield.value, notes_textfield.value, time_textfield.value, first_portion_textfield.value)
+                        Medicine.edit_remedio(medicines[0], name_textfield.value, notes_textfield.value, time_textfield.value, first_portion_textfield.value)
                         page.navigation_bar = ""
                         page.go("/calendar")
                 elif len(first_portion_textfield.value) == 5:
@@ -45,7 +46,7 @@ def editmedicines(page):
                                 2] == ":" and \
                             first_portion_textfield.value[3] in ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9") and \
                             first_portion_textfield.value[4] in ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"):
-                        DataMethods.edit_remedio(medicines[0], name_textfield.value, notes_textfield.value, time_textfield.value, first_portion_textfield.value)
+                        Medicine.edit_remedio(medicines[0], name_textfield.value, notes_textfield.value, time_textfield.value, first_portion_textfield.value)
                         page.navigation_bar = ""
                         page.go("/calendar")
                 else:
@@ -70,7 +71,7 @@ def editmedicines(page):
                             first_portion_textfield.value[2] == ":" and \
                             first_portion_textfield.value[3] in ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9") and \
                             first_portion_textfield.value[4] in ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"):
-                        DataMethods.edit_remedio(medicines[0], name_textfield.value, notes_textfield.value, time_textfield.value, first_portion_textfield.value)
+                        Medicine.edit_remedio(medicines[0], name_textfield.value, notes_textfield.value, time_textfield.value, first_portion_textfield.value)
                         page.navigation_bar = ""
                         page.go("/calendar")
                 elif len(first_portion_textfield.value) == 5:
@@ -81,7 +82,7 @@ def editmedicines(page):
                                 2] == ":" and \
                             first_portion_textfield.value[3] in ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9") and \
                             first_portion_textfield.value[4] in ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"):
-                        DataMethods.edit_remedio(medicines[0], name_textfield.value, notes_textfield.value, time_textfield.value, first_portion_textfield.value)
+                        Medicine.edit_remedio(medicines[0], name_textfield.value, notes_textfield.value, time_textfield.value, first_portion_textfield.value)
                         page.navigation_bar = ""
                         page.go("/calendar")
                 else:
@@ -102,7 +103,7 @@ def editmedicines(page):
         page.update()
 
     def delete_medicines(e):
-        DataMethods.remove_remedio(medicines[0])
+        Medicine.remove_remedio(medicines[0])
         page.navigation_bar = ""
         page.go("/calendar")
 

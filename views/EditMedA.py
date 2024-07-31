@@ -1,5 +1,6 @@
 from flet import *
-from features.Database import DataMethods
+from features.User import User
+from features.Appointment import Appointment
 
 
 def editmeda(page):
@@ -8,14 +9,14 @@ def editmeda(page):
 
     def get_user_data():
         id_user = page.client_storage.get("logged_user_id")
-        data = DataMethods.show_users()
+        data = User.show_users()
         for user in data:
             if user[0] == id_user:
                 return user
 
     def get_id_meda():
         meda_id = page.client_storage.get("consulta_id")
-        data = DataMethods.show_consultas(user[0])
+        data = Appointment.show_consultas(user[0])
         for meda in data:
             if meda[0] == meda_id:
                 return meda
@@ -30,7 +31,7 @@ def editmeda(page):
                 1] in ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9") and time_textfield.value[2] == ":" and \
                     time_textfield.value[3] in ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9") and \
                     time_textfield.value[4] in ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"):
-                DataMethods.edit_consulta(meda[0], name_textfield.value, notes_textfield.value, f'{day}/{mes}/{year}', time_textfield.value)
+                Appointment.edit_consulta(meda[0], name_textfield.value, notes_textfield.value, f'{day}/{mes}/{year}', time_textfield.value)
                 page.navigation_bar = ""
                 page.go("/calendar")
             else:
@@ -43,7 +44,7 @@ def editmeda(page):
                 1] in ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9") and time_textfield.value[2] == ":" and \
                     time_textfield.value[3] in ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9") and \
                     time_textfield.value[4] in ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"):
-                DataMethods.edit_consulta(meda[0], name_textfield.value, notes_textfield.value, f'{day}/{mes}/{year}', time_textfield.value)
+                Appointment.edit_consulta(meda[0], name_textfield.value, notes_textfield.value, f'{day}/{mes}/{year}', time_textfield.value)
                 page.navigation_bar = ""
                 page.go("/calendar")
             else:
@@ -59,7 +60,7 @@ def editmeda(page):
         page.update()
 
     def delete_meda(e):
-        DataMethods.remove_consulta(meda[0])
+        Appointment.remove_consulta(meda[0])
         page.navigation_bar = ""
         page.go("/calendar")
 

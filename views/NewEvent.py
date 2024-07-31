@@ -1,5 +1,4 @@
 from flet import *
-from features.Database import DataMethods
 from features.Calendar import *
 
 def newevent(page):

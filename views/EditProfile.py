@@ -1,23 +1,23 @@
 from flet import *
 from features.NavBar import on_change
-from features.Database import DataMethods
+from features.User import User
 
 
 def editprofile(page):
     def get_user_data():
         id_user = page.client_storage.get("logged_user_id")
-        data = DataMethods.show_users()
+        data = User.show_users()
         for user in data:
             if user[0] == id_user:
                 return user
 
     def edit_profile(e):
-        DataMethods.edit_users(user[0], user[4], number_textfield.value, height_textfield.value, weight_textfield.value, blood_type_textfield.value)
-        print(DataMethods.show_users())
+        User.edit_users(user[0], user[4], number_textfield.value, height_textfield.value, weight_textfield.value, blood_type_textfield.value)
+        print(User.show_users())
         page.go('/')
 
     def delete_user(e):
-        DataMethods.remove_users(user[0])
+        User.remove_users(user[0])
         page.navigation_bar = ""
         page.go('/login')
 

@@ -1,5 +1,6 @@
 from flet import *
-from features.Database import DataMethods
+from features.User import User
+from features.Medicine import Medicine
 
 
 def medicines(page):
@@ -8,7 +9,7 @@ def medicines(page):
 
     def get_user_data():
         id_user = page.client_storage.get("logged_user_id")
-        data = DataMethods.show_users()
+        data = User.show_users()
         for user in data:
             if user[0] == id_user:
                 return user
@@ -25,7 +26,7 @@ def medicines(page):
                     if first_portion_textfield.value[0] in ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9") and first_portion_textfield.value[1] in ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9") and first_portion_textfield.value[2] == ":" and \
                             first_portion_textfield.value[3] in ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9") and \
                             first_portion_textfield.value[4] in ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"):
-                        DataMethods.add_remedio(user[0], name_textfield.value, notes_textfield.value, time_textfield.value,
+                        Medicine.add_remedio(user[0], name_textfield.value, notes_textfield.value, time_textfield.value,
                                                 first_portion_textfield.value)
                         page.navigation_bar = ""
                         page.go("/calendar")
@@ -36,7 +37,7 @@ def medicines(page):
                         2] == ":" and \
                             first_portion_textfield.value[3] in ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9") and \
                             first_portion_textfield.value[4] in ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"):
-                        DataMethods.add_remedio(user[0], name_textfield.value, notes_textfield.value,
+                        Medicine.add_remedio(user[0], name_textfield.value, notes_textfield.value,
                                                 time_textfield.value,
                                                 first_portion_textfield.value)
                         page.navigation_bar = ""
@@ -61,7 +62,7 @@ def medicines(page):
                     if first_portion_textfield.value[0] in ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9") and first_portion_textfield.value[1] in ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9") and first_portion_textfield.value[2] == ":" and \
                             first_portion_textfield.value[3] in ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9") and \
                             first_portion_textfield.value[4] in ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"):
-                        DataMethods.add_remedio(user[0], name_textfield.value, notes_textfield.value, time_textfield.value,
+                        Medicine.add_remedio(user[0], name_textfield.value, notes_textfield.value, time_textfield.value,
                                                 first_portion_textfield.value)
                         page.navigation_bar = ""
                         page.go("/calendar")
@@ -72,7 +73,7 @@ def medicines(page):
                         2] == ":" and \
                             first_portion_textfield.value[3] in ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9") and \
                             first_portion_textfield.value[4] in ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"):
-                        DataMethods.add_remedio(user[0], name_textfield.value, notes_textfield.value,
+                        Medicine.add_remedio(user[0], name_textfield.value, notes_textfield.value,
                                                 time_textfield.value,
                                                 first_portion_textfield.value)
                         page.navigation_bar = ""
