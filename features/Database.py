@@ -66,6 +66,32 @@ class DataMethods:
                               f'hora_exame TEXT NOT NULL,'
                               f'data_exame TEXT NOT NULL)')
 
+            connection = connect(f'{DATABASE_NAME}')  # Replace with your database filename
+            cursor = connection.cursor()
+            try:
+                # Execute the trigger creation query directly using cursor.execute()
+                cursor.execute("""
+                            CREATE TRIGGER validar_insercao_users
+                            BEFORE INSERT ON usuarios
+                            WHEN new.cpf <> 11
+                            BEGIN
+                                SELECT RAISE(ABORT, 'CPF deve ter 11 digitos');
+                            END;
+                        """)
+                connection.commit()
+                print("Trigger 'validar_insercao_users' criado com sucesso!")
+            except Error as e:
+                print(f"Error creating trigger: {e}")
+
+            connection.close()
+
+            try:
+                cls.execute_query("""INSERT INTO usuarios(nome, email, cpf, senha, data_nascimento, sexo, telefone , tipo_sanguineo, altura, peso) VALUES('Arthur', 'a', 5271632881, 'a', '24/08/2004', 'M', 19995128382, 'A+', 1.72, 80.0)""")
+            except Error as e:
+                print(f"Error: {e}")
+
+
+
     # Metodo para verificar login
     @classmethod
     def verify_login(cls, email: str, senha: str) -> bool:
