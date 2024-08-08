@@ -1,5 +1,6 @@
 from sqlite3 import *
-import os
+import os, time
+from features.User import User
 
 DATABASE_NAME = "banco.db"
 
@@ -33,7 +34,7 @@ class DataMethods:
                               f'id_usuario INTEGER PRIMARY KEY AUTOINCREMENT,'
                               f'nome TEXT NOT NULL,'
                               f'email TEXT UNIQUE NOT NULL,'
-                              f'cpf INTEGER UNIQUE NOT NULL,'
+                              f'cpf TEXT UNIQUE NOT NULL,'
                               f'senha TEXT NOT NULL,'
                               f'data_nascimento TEXT NOT NULL,'
                               f'sexo TEXT NOT NULL,'
@@ -69,11 +70,12 @@ class DataMethods:
             connection = connect(f'{DATABASE_NAME}')  # Replace with your database filename
             cursor = connection.cursor()
             try:
+
                 # Execute the trigger creation query directly using cursor.execute()
                 cursor.execute("""
                             CREATE TRIGGER validar_insercao_users
                             BEFORE INSERT ON usuarios
-                            WHEN new.cpf <> 11
+                            WHEN length(new.cpf) <> 11
                             BEGIN
                                 SELECT RAISE(ABORT, 'CPF deve ter 11 digitos');
                             END;
@@ -83,12 +85,25 @@ class DataMethods:
             except Error as e:
                 print(f"Error creating trigger: {e}")
 
-            connection.close()
-
             try:
-                cls.execute_query("""INSERT INTO usuarios(nome, email, cpf, senha, data_nascimento, sexo, telefone , tipo_sanguineo, altura, peso) VALUES('Arthur', 'a', 5271632881, 'a', '24/08/2004', 'M', 19995128382, 'A+', 1.72, 80.0)""")
+                # cls.execute_query("""INSERT INTO usuarios(nome, email, cpf, senha, data_nascimento, sexo, telefone , tipo_sanguineo, altura, peso) VALUES('Arthur', 'a', '52716328811', 'a', '24/08/2004', 'M', 19995128382, 'A+', 1.72, 80.0)""")
+                User.add_users('Arthur', 'a', "52716328811", 'a', '24/08/2004', 'M', 19995128382, 'A+', 1.72, 80.0)
+                # print(connection.execute("SELECT * from usuarios").fetchall())
             except Error as e:
                 print(f"Error: {e}")
+
+            # time.sleep(20)
+
+            try:
+                cursor.execute("""
+                    CREATE VIEW users_view as SELECT * FROM usuarios
+                """)
+                connection.commit()
+            except Error as e:
+                print(f"Error: {e}")
+            finally:
+                connection.close()
+
 
 
 

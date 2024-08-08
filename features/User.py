@@ -22,7 +22,7 @@ class User:
     def show_users(cls):
             connection = cls.create_connection()
             cursor = connection.cursor()
-            cursor.execute('SELECT * FROM usuarios')
+            cursor.execute('SELECT * FROM users_view')
             usuarios = cursor.fetchall()
             connection.close()
             return usuarios
@@ -53,7 +53,7 @@ class User:
             f"INSERT INTO usuarios(nome, email, cpf, senha, data_nascimento, sexo, telefone , tipo_sanguineo, altura, peso) VALUES ("
             f"'{nome}',"
             f"'{email}',"
-            f"{cpf},"
+            f"'{cpf}',"
             f"'{senha}',"
             f"'{data_nascimento}',"
             f"'{sexo}',"
