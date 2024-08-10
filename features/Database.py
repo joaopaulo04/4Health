@@ -69,9 +69,44 @@ class DataMethods:
 
             connection = connect(f'{DATABASE_NAME}')  # Replace with your database filename
             cursor = connection.cursor()
-            try:
 
-                # Execute the trigger creation query directly using cursor.execute()
+            try:
+                cursor.execute("""BEGIN TRANSACTION;""")
+                cursor.execute("""
+                            INSERT INTO usuarios (nome, email, cpf, senha, data_nascimento, sexo, telefone, tipo_sanguineo, altura, peso) 
+                            VALUES ('test_user', 'a', "", 'a', '01/01/1999', 'M', 00000000001, 'A+', 1.72, 80.0)
+                """)
+                cursor.execute("""COMMIT;""")
+                connection.commit()
+                print('TRANSACTION: INSERT test_user feito com sucesso!')
+            except Error as e:
+                print(f"Error: {e}")
+
+            try:
+                cursor.execute("""BEGIN TRANSACTION;""")
+                cursor.execute("""
+                            INSERT INTO exame (id_usuario, nome_exame, desc_exame, hora_exame, data_exame)
+                            VALUES (1, 'Exame de Urina', '', '09:30', '31/05/2024')
+                """)
+                cursor.execute("""COMMIT;""")
+                connection.commit()
+                print('TRANSACTION: INSERT exame feito com sucesso!')
+            except Error as e:
+                print(f"Error: {e}")
+
+            try:
+                cursor.execute("""BEGIN TRANSACTION;""")
+                cursor.execute("""
+                            INSERT INTO exame (id_usuario, nome_exame, desc_exame, hora_exame, data_exame)
+                            VALUES (1, 'Exame de Sangue', '', '10:30', '01/06/2024')
+                """)
+                cursor.execute("""COMMIT;""")
+                connection.commit()
+                print('TRANSACTION: INSERT exame feito com sucesso!')
+            except Error as e:
+                print(f"Error: {e}")
+
+            try:
                 cursor.execute("""
                             CREATE TRIGGER validar_insercao_users
                             BEFORE INSERT ON usuarios
@@ -86,28 +121,15 @@ class DataMethods:
                 print(f"Error creating trigger: {e}")
 
             try:
-                # cls.execute_query("""INSERT INTO usuarios(nome, email, cpf, senha, data_nascimento, sexo, telefone , tipo_sanguineo, altura, peso) VALUES('Arthur', 'a', '52716328811', 'a', '24/08/2004', 'M', 19995128382, 'A+', 1.72, 80.0)""")
-                User.add_users('Arthur', 'a', "52716328811", 'a', '24/08/2004', 'M', 19995128382, 'A+', 1.72, 80.0)
-                # print(connection.execute("SELECT * from usuarios").fetchall())
-            except Error as e:
-                print(f"Error: {e}")
-
-            # time.sleep(20)
-
-            try:
                 cursor.execute("""
                     CREATE VIEW users_view as SELECT * FROM usuarios
                 """)
                 connection.commit()
             except Error as e:
                 print(f"Error: {e}")
-            finally:
-                connection.close()
 
+            connection.close()
 
-
-
-    # Metodo para verificar login
     @classmethod
     def verify_login(cls, email: str, senha: str) -> bool:
         connection = cls.create_connection()
