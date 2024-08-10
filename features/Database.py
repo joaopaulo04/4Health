@@ -1,6 +1,5 @@
 from sqlite3 import *
-import os, time
-from features.User import User
+import os
 
 DATABASE_NAME = "banco.db"
 
